@@ -19,23 +19,44 @@ interface Result {
 }
 
 function renderMarkdown(text: string): string {
-  return text
-    .replace(/^### (.+)$/gm, '<h3 class="md-h3">$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2 class="md-h2">$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1 class="md-h1">$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/^---$/gm, '<hr class="md-hr"/>')
-    .replace(/^[*-] (.+)$/gm, '<li class="md-li">$1</li>')
-    .replace(/^\d+\. (.+)$/gm, '<li class="md-li md-oli">$1</li>')
-    .replace(/(<li class="md-li[^"]*">.*?<\/li>\n?)+/gs, (m) => `<ul class="md-ul">${m}</ul>`)
-    .replace(/\[(\d+)\]/g, '<cite class="md-cite">[$1]</cite>')
-    .split('\n\n')
-    .map(block => {
-      if (block.startsWith('<h') || block.startsWith('<ul') || block.startsWith('<hr')) return block
-      return `<p class="md-p">${block.replace(/\n/g, '<br/>')}</p>`
-    })
-    .join('')
+  const lines = text.split('\n')
+  let html = ''
+  let inList = false
+
+  for (const line of lines) {
+    if (/^\s*$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      continue
+    }
+    if (/^### (.+)$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      html += `<h3 class="md-h3">${line.replace(/^### /, '')}</h3>`
+    } else if (/^## (.+)$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      html += `<h2 class="md-h2">${line.replace(/^## /, '')}</h2>`
+    } else if (/^# (.+)$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      html += `<h1 class="md-h1">${line.replace(/^# /, '')}</h1>`
+    } else if (/^---$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      html += '<hr class="md-hr"/>'
+    } else if (/^[*-] (.+)$/.test(line)) {
+      if (!inList) { html += '<ul class="md-ul">'; inList = true }
+      html += `<li class="md-li">${line.replace(/^[*-] /, '')}</li>`
+    } else if (/^\d+\. (.+)$/.test(line)) {
+      if (!inList) { html += '<ul class="md-ul">'; inList = true }
+      html += `<li class="md-li">${line.replace(/^\d+\. /, '')}</li>`
+    } else {
+      if (inList) { html += '</ul>'; inList = false }
+      let l = line
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\[(\d+)\]/g, '<cite class="md-cite">[$1]</cite>')
+      html += `<p class="md-p">${l}</p>`
+    }
+  }
+  if (inList) html += '</ul>'
+  return html
 }
 
 function SourceCard({ source, index }: { source: Source; index: number }) {
