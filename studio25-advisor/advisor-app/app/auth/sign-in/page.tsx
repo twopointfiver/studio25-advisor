@@ -2,33 +2,34 @@ import { SignIn } from '@clerk/nextjs'
 
 export default function SignInPage() {
   return (
-    <main className="min-h-screen bg-black flex items-center justify-center">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="font-marker text-3xl text-[#7BC906] mb-2" style={{fontFamily: 'Ruthie, cursive'}}>
+    <main style={{minHeight:'100vh',background:'#000000',display:'flex',alignItems:'center',justifyContent:'center',padding:'32px 16px'}}>
+      <div style={{width:'100%',maxWidth:'420px'}}>
+        <div style={{textAlign:'center',marginBottom:'28px'}}>
+          <div style={{fontFamily:'Ruthie,cursive',fontSize:'2.2rem',color:'#7BC906',marginBottom:'6px'}}>
             studio 2.5
           </div>
-          <div className="text-white/50 text-sm" style={{fontFamily: 'Hedvig Letters Serif, serif'}}>
+          <div style={{fontFamily:'Hedvig Letters Serif,serif',fontSize:'13px',color:'rgba(255,255,255,0.45)'}}>
             advisor · sign in to continue
           </div>
         </div>
         <SignIn
+          routing="path"
+          path="/signin"
           appearance={{
             elements: {
               rootBox: 'w-full',
-              card: 'bg-[#0a1002] border border-[#7BC906]/20 shadow-xl',
-              headerTitle: 'text-white font-semibold',
-              headerSubtitle: 'text-white/50',
-              socialButtonsBlockButton: 'border border-white/20 text-white hover:bg-white/5',
-              socialButtonsBlockButtonText: 'text-white/70',
-              dividerLine: 'bg-white/10',
-              dividerText: 'text-white/30',
-              formFieldLabel: 'text-white/60 text-xs',
-              formFieldInput: 'bg-white/5 border-white/20 text-white focus:border-[#7BC906]/50',
-              formButtonPrimary: 'bg-[#7BC906] text-[#121f04] font-bold hover:opacity-90',
-              footerActionLink: 'text-[#7BC906] hover:text-[#6f9f25]',
-              identityPreviewText: 'text-white/70',
-              identityPreviewEditButton: 'text-[#7BC906]',
+              card: { background:'#0a1002', border:'1px solid rgba(123,201,6,0.2)', borderRadius:'12px', boxShadow:'0 8px 40px rgba(0,0,0,0.6)' },
+              headerTitle: { color:'#ffffff', fontWeight:'600' },
+              headerSubtitle: { color:'rgba(255,255,255,0.45)' },
+              socialButtonsBlockButton: { border:'1px solid rgba(255,255,255,0.15)', color:'rgba(255,255,255,0.8)', background:'transparent' },
+              dividerLine: { background:'rgba(255,255,255,0.08)' },
+              dividerText: { color:'rgba(255,255,255,0.25)' },
+              formFieldLabel: { color:'rgba(255,255,255,0.55)', fontSize:'12px' },
+              formFieldInput: { background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.15)', color:'#ffffff', borderRadius:'8px' },
+              formButtonPrimary: { background:'#7BC906', color:'#121f04', fontWeight:'700' },
+              footerActionLink: { color:'#7BC906' },
+              identityPreviewText: { color:'rgba(255,255,255,0.7)' },
+              identityPreviewEditButton: { color:'#7BC906' },
             },
           }}
         />
