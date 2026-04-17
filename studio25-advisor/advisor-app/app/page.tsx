@@ -12,13 +12,13 @@ export default function Home() {
         <div className="flex items-center gap-4">
           <SignedOut>
             <Link
-              href="/sign-in"
+              href="/signin"
               className="text-sm font-semibold text-white/60 hover:text-white transition-colors"
             >
               sign in
             </Link>
             <Link
-              href="/sign-up"
+              href="/signup"
               className="text-sm font-semibold bg-[#7BC906] text-[#121f04] px-4 py-2 rounded-full hover:opacity-90 transition-opacity"
             >
               get access
@@ -59,13 +59,13 @@ export default function Home() {
         <div className="flex items-center gap-4">
           <SignedOut>
             <Link
-              href="/sign-up"
+              href="/signup"
               className="bg-[#7BC906] text-[#121f04] font-bold px-8 py-4 rounded-lg hover:opacity-90 transition-opacity text-sm"
             >
               — request access →
             </Link>
             <Link
-              href="/sign-in"
+              href="/signin"
               className="border border-white/20 text-white/60 font-semibold px-8 py-4 rounded-lg hover:border-white/40 hover:text-white transition-all text-sm"
             >
               sign in
