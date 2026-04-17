@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Hedvig+Letters+Serif:opsz@12..24&family=Ruthie&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --g-deep: #121f04;
+  --g-mid: #446b1a;
+  --g-bright: #6f9f25;
+  --g-vivid: #7BC906;
+  --g-pale: #e8f0d8;
+  --g-wash: #f4f7ed;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: #ffffff;
+  color: #0e1209;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-serif {
+  font-family: 'Hedvig Letters Serif', serif;
+}
+
+.font-marker {
+  font-family: 'Ruthie', cursive;
+}
+
+/* Answer formatting */
+.answer-content p {
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  font-size: 0.9rem;
+  color: #0e1209;
+}
+
+.answer-content strong {
+  font-weight: 600;
+  color: #121f04;
+}
+
+.answer-content h1,
+.answer-content h2,
+.answer-content h3 {
+  font-weight: 700;
+  margin: 1.5rem 0 0.5rem;
+  color: #121f04;
+}
+
+.answer-content ul,
+.answer-content ol {
+  margin: 0.75rem 0 0.75rem 1.5rem;
+}
+
+.answer-content li {
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+/* Citation numbers */
+.answer-content [data-cite] {
+  color: var(--g-vivid);
+  font-size: 0.75rem;
+  font-weight: 600;
+  vertical-align: super;
+}
