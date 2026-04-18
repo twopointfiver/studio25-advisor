@@ -6,9 +6,13 @@ export default function Home() {
     <main className="min-h-screen bg-black text-white">
       {/* NAV */}
       <nav className="border-b border-white/10 px-8 py-4 flex items-center justify-between">
-        <div className="font-marker text-2xl text-[#7BC906]" style={{fontFamily: 'Ruthie, cursive'}}>
-          studio 2.5
-        </div>
+        <Link href="/" className="flex items-center">
+          <img
+            src="https://studio25assets.pages.dev/studio25-logo.png"
+            alt="studio 2.5"
+            style={{ height: 36 }}
+          />
+        </Link>
         <div className="flex items-center gap-4">
           <SignedOut>
             <Link
@@ -36,8 +40,8 @@ export default function Home() {
       </nav>
 
       {/* HERO */}
-      <div className="max-w-5xl mx-auto px-8 pt-24 pb-20">
-        <div className="inline-flex items-center gap-2 bg-[#7BC906]/10 border border-[#7BC906]/30 rounded-full px-4 py-2 mb-10">
+      <div className="max-w-5xl mx-auto px-8 pt-14 pb-16">
+        <div className="inline-flex items-center gap-2 bg-[#7BC906]/10 border border-[#7BC906]/30 rounded-full px-4 py-2 mb-8">
           <div className="w-2 h-2 rounded-full bg-[#7BC906] animate-pulse" />
           <span className="text-xs font-semibold text-[#7BC906]" style={{fontFamily: 'Hedvig Letters Serif, serif'}}>
             executive advisory · infrastructure AI transformation
@@ -50,10 +54,10 @@ export default function Home() {
         </h1>
 
         <p className="text-xl text-white/60 leading-relaxed max-w-2xl mb-4" style={{fontFamily: 'Hedvig Letters Serif, serif'}}>
-          real-time research intelligence and strategic advisory for executives navigating AI transformation in airports, transit, utilities, and capital infrastructure programs.
+          real-time research intelligence and strategic advisory for executives and leaders navigating AI transformation in design studios and asset owner organizations.
         </p>
-        <p className="text-base text-white/40 leading-relaxed max-w-2xl mb-12" style={{fontFamily: 'Hedvig Letters Serif, serif'}}>
-          ask any question about infrastructure AI transformation and receive a researched, evidence-based answer grounded in current developments — not generic AI output.
+        <p className="text-base text-white/40 leading-relaxed max-w-2xl mb-10" style={{fontFamily: 'Hedvig Letters Serif, serif'}}>
+          ask any question about infrastructure AI transformation and receive a researched, evidence-based answer grounded in current developments and our own studio 2.5 experience model.
         </p>
 
         <div className="flex items-center gap-4">
@@ -88,8 +92,8 @@ export default function Home() {
           {[
             {
               num: '01',
-              title: 'strategic Q&A',
-              desc: 'ask any question about infrastructure AI transformation. get a researched, cited answer grounded in current evidence — not generic output.',
+              title: 'ask anything',
+              desc: 'ask any question at the intersection of AI transformation and the built environment. get a researched, cited answer grounded in current evidence from our studio 2.5 advisor agents.',
             },
             {
               num: '02',
@@ -99,11 +103,11 @@ export default function Home() {
             {
               num: '03',
               title: 'domain-specific',
-              desc: 'every response is grounded in the studio 2.5 advisory framework — infrastructure AI, digital twins, lifecycle intelligence, and governance.',
+              desc: 'every response is grounded in the studio 2.5 experience model — intelligence and spatial AI, data and digital infrastructure, design and the built environment, governance and policy, planet and climate, and signals and foresight.',
             },
           ].map(card => (
             <div key={card.num} className="border border-white/10 rounded-lg p-6 bg-white/[0.02] hover:border-[#7BC906]/30 transition-colors">
-              <div className="font-marker text-3xl text-[#7BC906] mb-3" style={{fontFamily: 'Ruthie, cursive'}}>
+              <div className="text-3xl font-bold text-[#7BC906] mb-3 tracking-tight">
                 {card.num}
               </div>
               <div className="font-semibold text-white mb-2 text-sm">{card.title}</div>
@@ -117,7 +121,11 @@ export default function Home() {
 
       {/* FOOTER */}
       <div className="border-t border-white/10 px-8 py-8 flex items-center justify-between">
-        <div className="font-marker text-xl text-[#7BC906]/40" style={{fontFamily: 'Ruthie, cursive'}}>studio 2.5</div>
+        <img
+          src="https://studio25assets.pages.dev/studio25-logo.png"
+          alt="studio 2.5"
+          style={{ height: 24, opacity: 0.35 }}
+        />
         <div className="text-xs text-white/25" style={{fontFamily: 'Hedvig Letters Serif, serif'}}>
           © 2026 studio 2.5 · ontario, canada · advisor.studio25.xyz
         </div>
