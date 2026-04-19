@@ -1,4 +1,4 @@
-·—–———→·📊⚡🔍🗺️··import Link from 'next/link'
+import Link from 'next/link'
 import { SignedIn, SignedOut } from '@clerk/nextjs'
 
 export default function Home() {
