@@ -247,7 +247,7 @@ export default function Dashboard() {
             fontFamily: "'Hedvig Letters Serif', serif",
             fontSize: 'clamp(24px,3.5vw,42px)',
             fontWeight: 400,
-            fontStyle: 'italic',
+            
             color: '#ffffff',
             lineHeight: 1.15,
             margin: '0 0 10px',
