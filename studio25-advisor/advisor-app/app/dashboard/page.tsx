@@ -1,5 +1,4 @@
 'use client'
-
 import { useState } from 'react'
 import { UserButton } from '@clerk/nextjs'
 import { SIGNAL_TOPICS, SUGGESTED_QUESTIONS } from '@/lib/config'
@@ -69,9 +68,7 @@ function SourceCard({ source, index }: { source: Source; index: number }) {
       style={{display:'flex',alignItems:'flex-start',gap:10,padding:'12px 14px',background:'#ffffff',border:'0.5px solid rgba(68,107,26,0.18)',borderRadius:8,textDecoration:'none',transition:'all 0.15s'}}
       onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(123,201,6,0.5)'; el.style.background='#f4f7ed'; el.style.transform='translateY(-1px)' }}
       onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(68,107,26,0.18)'; el.style.background='#ffffff'; el.style.transform='translateY(0)' }}>
-      <img src={faviconUrl} alt={domain} width={16} height={16}
-        style={{marginTop:2,flexShrink:0,borderRadius:3,opacity:0.85}}
-        onError={e => { (e.target as HTMLImageElement).style.display='none' }} />
+      <img src={faviconUrl} alt={domain} width={16} height={16} style={{marginTop:2,flexShrink:0,borderRadius:3,opacity:0.85}} onError={e => { (e.target as HTMLImageElement).style.display='none' }} />
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:10,color:'#7a9058',letterSpacing:'0.03em',marginBottom:2}}>{domain}</div>
         <div style={{fontSize:12,fontWeight:600,color:'#0e1209',lineHeight:1.4}}>{source.title}</div>
@@ -110,27 +107,15 @@ function CalendlyCTA() {
           ready to turn this into a deliverable?
         </div>
         <div style={{fontFamily:"'Hedvig Letters Serif',serif", fontSize: 12, color: 'rgba(232,240,216,0.5)', lineHeight: 1.6, maxWidth: 420}}>
-          studio 2.5 converts intelligence into scoped advisory outcomes — research reports, business cases, gap analyses, and transformation roadmaps — in 1–2 weeks. what a big 4 firm takes 6 months to produce.
+          studio 2.5 converts intelligence into scoped advisory outcomes, research reports, business cases, gap analyses, and transformation roadmaps, in 1 to 2 weeks. what a big 4 firm takes 6 months to produce.
         </div>
       </div>
-      <a
-        href={CALENDLY}
-        target="_blank"
-        rel="noopener noreferrer"
+      <a href={CALENDLY} target="_blank" rel="noopener noreferrer"
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: 8,
-          background: '#7BC906',
-          color: '#121f04',
-          fontWeight: 700,
-          fontSize: 13,
-          padding: '12px 22px',
-          borderRadius: 8,
-          textDecoration: 'none',
-          flexShrink: 0,
-          transition: 'all 0.15s',
-          whiteSpace: 'nowrap',
+          display: 'inline-flex', alignItems: 'center', gap: 8,
+          background: '#7BC906', color: '#121f04', fontWeight: 700, fontSize: 13,
+          padding: '12px 22px', borderRadius: 8, textDecoration: 'none',
+          flexShrink: 0, transition: 'all 0.15s', whiteSpace: 'nowrap',
         }}
         onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background='#8bda07'; el.style.transform='translateY(-1px)'; el.style.boxShadow='0 6px 20px rgba(123,201,6,0.35)' }}
         onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background='#7BC906'; el.style.transform='translateY(0)'; el.style.boxShadow='none' }}
@@ -154,12 +139,19 @@ export default function Dashboard() {
     setError(''); setResult(null); setLoadingState('searching')
     setTimeout(() => setLoadingState('synthesizing'), 2500)
     try {
-      const res = await fetch('/api/query', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({question}) })
+      const res = await fetch('/api/query', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({question})
+      })
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setResult({ type: 'query', ...data })
-    } catch (e: any) { setError(e.message || 'query failed') }
-    finally { setLoadingState('done'); setTimeout(() => setLoadingState('idle'), 300) }
+    } catch (e: any) {
+      setError(e.message || 'query failed')
+    } finally {
+      setLoadingState('done'); setTimeout(() => setLoadingState('idle'), 300)
+    }
   }
 
   async function submitBriefing(topicId: string) {
@@ -167,12 +159,19 @@ export default function Dashboard() {
     setError(''); setResult(null); setActiveTopic(topicId); setLoadingState('searching')
     setTimeout(() => setLoadingState('synthesizing'), 2500)
     try {
-      const res = await fetch('/api/briefing', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({topicId}) })
+      const res = await fetch('/api/briefing', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({topicId})
+      })
       const data = await res.json()
       if (data.error) throw new Error(data.error)
       setResult({ type: 'briefing', ...data })
-    } catch (e: any) { setError(e.message || 'briefing failed') }
-    finally { setLoadingState('done'); setActiveTopic(null); setTimeout(() => setLoadingState('idle'), 300) }
+    } catch (e: any) {
+      setError(e.message || 'briefing failed')
+    } finally {
+      setLoadingState('done'); setActiveTopic(null); setTimeout(() => setLoadingState('idle'), 300)
+    }
   }
 
   const isLoading = loadingState === 'searching' || loadingState === 'synthesizing'
@@ -239,24 +238,25 @@ export default function Dashboard() {
           <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
             <div style={{width:7,height:7,borderRadius:'50%',background:'#7BC906',animation:'pulse 2.5s ease-in-out infinite'}}/>
             <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:12,color:'rgba(123,201,6,0.65)'}}>
-              {mode==='query'?'strategic intelligence · real-time research':'signal briefings · curated by signal area'}
+              {mode==='query'?'world model intelligence · real-time research':'signal briefings · curated by signal area'}
             </span>
           </div>
-          {/* TITLE — Hedvig Letters Serif as requested */}
+          {/* TITLE */}
           <h1 style={{
             fontFamily: "'Hedvig Letters Serif', serif",
             fontSize: 'clamp(24px,3.5vw,42px)',
             fontWeight: 400,
-            
             color: '#ffffff',
             lineHeight: 1.15,
             margin: '0 0 10px',
             letterSpacing: '-0.01em',
           }}>
-            a new type of <span style={{color:'#7BC906'}}>design company.</span>
+            the living model is <span style={{color:'#7BC906'}}>the new design artifact.</span>
           </h1>
           <p style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:14,color:'rgba(232,240,216,0.55)',maxWidth:520,lineHeight:1.75,margin:0}}>
-            {mode==='query'?'infrastructure AI transformation intelligence grounded in real-time research. domain-specific, evidence-based, built for executive decision-making.':'select a signal area to receive a concise briefing on current developments and implications for infrastructure leaders.'}
+            {mode==='query'
+              ? 'world model architecture, 3d as code, and AI transformation intelligence for infrastructure owners and design leaders. grounded in real-time research, built for executive decision-making.'
+              : 'select a signal area to receive a current briefing on world models, 3d as code, physical AI, and next-generation infrastructure transformation.'}
           </p>
         </div>
       </div>
@@ -268,10 +268,13 @@ export default function Dashboard() {
         {mode==='query' && !result && (
           <>
             <div style={{background:'#ffffff',border:'0.5px solid rgba(68,107,26,0.2)',borderRadius:12,padding:4,marginBottom:20,boxShadow:'0 2px 12px rgba(68,107,26,0.05)'}}>
-              <textarea value={question} onChange={e=>setQuestion(e.target.value)}
+              <textarea
+                value={question}
+                onChange={e=>setQuestion(e.target.value)}
                 onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitQuery()}}}
-                placeholder="ask a question about infrastructure AI transformation..."
-                disabled={isLoading} rows={3}
+                placeholder="ask a question about world models, 3d as code, and AI transformation for infrastructure..."
+                disabled={isLoading}
+                rows={3}
                 style={{width:'100%',padding:'14px 16px',fontSize:14,color:'#0e1209',background:'transparent',border:'none',outline:'none',resize:'none',lineHeight:1.7,fontFamily:"'Plus Jakarta Sans',sans-serif",boxSizing:'border-box'}}/>
               <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'6px 12px 12px'}}>
                 <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(68,107,26,0.4)'}}>shift+enter for new line · enter to submit</span>
@@ -329,12 +332,10 @@ export default function Dashboard() {
                 {new Date(result.timestamp).toLocaleDateString('en-CA',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'})}
               </div>
             </div>
-
             {/* Answer body */}
             <div style={{background:'#ffffff',border:'0.5px solid rgba(68,107,26,0.15)',borderRadius:10,padding:'28px 32px',marginBottom:2}}>
               <div dangerouslySetInnerHTML={{__html:renderMarkdown(bodyText)}}/>
             </div>
-
             {/* Sources */}
             {result.sources && result.sources.length > 0 && (
               <div style={{background:'#f8faf3',border:'0.5px solid rgba(68,107,26,0.15)',borderRadius:10,padding:'18px 22px',marginBottom:2}}>
@@ -346,10 +347,8 @@ export default function Dashboard() {
                 </div>
               </div>
             )}
-
             {/* CALENDLY CTA */}
             <CalendlyCTA />
-
             {/* New query button */}
             <button onClick={()=>{setResult(null);setQuestion('')}}
               style={{fontSize:11,fontWeight:600,color:'#446b1a',background:'none',border:'0.5px solid rgba(68,107,26,0.3)',borderRadius:20,padding:'7px 18px',cursor:'pointer',fontFamily:"'Plus Jakarta Sans',sans-serif",marginTop:12}}>
