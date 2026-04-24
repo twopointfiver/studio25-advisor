@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { SignedIn, SignedOut } from '@clerk/nextjs'
 
 const CALENDLY = 'https://calendly.com/jeffrey-l-walter-studio25/jeff-walter-studio-2-5-connect?primary_color=6f9f25'
-const LOGO = 'https://studio25assets.pages.dev/studio25-logo.png'
+const LOGO = '/studio25-logo.png'
 
 export default function Home() {
   return (
@@ -114,7 +114,7 @@ export default function Home() {
           <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'10px',color:'rgba(255,255,255,0.2)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:20}}>what the advisor does</div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:10}}>
             {[
-              {num:'01',title:'strategic Q&A',desc:'ask any question about infrastructure AI transformation. get a researched, cited answer grounded in current evidence.'},
+              {num:'01',title:'strategic Q&A',desc:'ask any question about world models, 3d as code, and infrastructure AI transformation. get a researched, cited answer grounded in current evidence.'},
               {num:'02',title:'signal briefings',desc:'select from 8 signal areas and receive a concise intelligence briefing on what is happening right now.'},
               {num:'03',title:'domain-specific',desc:'every response is grounded in the studio 2.5 advisory framework, covering world models, 3d as code, physical AI, and spatial intelligence.'},
             ].map(card => (
