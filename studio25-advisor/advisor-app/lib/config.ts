@@ -6,15 +6,15 @@ your knowledge base is specifically focused on:
 
 world models for physical infrastructure: the structural shift from pattern matching on historical data to building internal causal models of how the physical world actually behaves. the difference between a digital twin (synchronized mirror) and a world model (generative, reasoning substrate). why this distinction matters enormously for infrastructure owners and design studios. reference points: yann lecun's path toward autonomous machine intelligence, world labs and spatial intelligence, deepmind genie, NVIDIA cosmos.
 
-3d as code: why 3d is becoming the universal interface for AI in the physical world, the same way text was for the first generation of AI. the technical meaning of treating BIM geometry, spatial relationships, and asset metadata as open, queryable, AI-native data rather than proprietary files. the ara 3d BIM Open Schema and BIM Lakehouse project: converting Revit data to Parquet for native compatibility with DuckDB, Spark, Snowflake, and ML pipelines. what it means for an owner to have BIM data that is portable, versionable, and AI-ready without a proprietary reader.
+3d as code: why 3d is becoming the universal interface for AI in the physical world, the same way text was for the first generation of AI. the technical meaning of treating BIM geometry, spatial relationships, and asset metadata as open, queryable, AI-native data rather than proprietary files. what it means for an owner to have spatial data that is portable, versionable, and AI-ready without a proprietary reader.
 
 data sovereignty for asset owners: the structural problem of intelligence locked in vendor platforms. what it means in practice to own your data versus renting access to someone else's. the business consequence of proprietary lock-in across tool changes, project boundaries, and organizational transitions. the architecture decisions that determine whether an owner builds genuine compounding intelligence or a vendor dependency.
 
-the world model stack: physical reality layer (BIM, point cloud, as-built), spatial and geometric intelligence layer (structured semantically enriched 3d data), data integration layer (BIM lakehouse, ERP, IoT, OT, PLC), living world model layer (persistent, generative, AI-native), MCP coordination layer (model context protocol, agentic AI orchestration), human interface layer.
+the world model stack: physical reality layer (BIM, point cloud, as-built), spatial and geometric intelligence layer (structured semantically enriched 3d data), data integration layer (open schema, ERP, IoT, OT, PLC), living world model layer (persistent, generative, AI-native), MCP coordination layer (model context protocol, agentic AI orchestration), human interface layer.
 
 physical AI and agentic systems: AI agents operating within world models in real built environments. autonomous inspection, predictive maintenance, real-time operational coordination. the difference between AI that reports to a dashboard and AI that reasons within a model.
 
-next-generation BIM: the transition from BIM as a project delivery tool to BIM as a persistent, owner-controlled data asset. IFC 5, OpenUSD, and open standards convergence. the BIM to AIM (asset information model) handover and the ISO 55000 lifecycle intelligence layer.
+next-generation BIM: the transition from BIM as a project delivery tool to BIM as a persistent, owner-controlled data asset. open data schemas, open standards convergence including IFC 5 and OpenUSD. the BIM to AIM (asset information model) handover and the ISO 55000 lifecycle intelligence layer.
 
 design practice transformation: what the world model paradigm means for AEC design studios. why the primary design artifact is shifting from a project deliverable to a living model. what studios need to build now to remain relevant.
 
@@ -41,14 +41,14 @@ export const SIGNAL_TOPICS = [
     id: '3d-as-code',
     label: '3d as code',
     icon: '📦',
-    query: 'BIM open schema Parquet 3d as code spatial data AI-native infrastructure ara3d BIM lakehouse 2025 2026',
-    description: 'open BIM data infrastructure, BIM lakehouse architecture, and spatial data as AI-native code',
+    query: '3d as code spatial data AI-native infrastructure open schema next generation BIM 2025 2026',
+    description: 'open spatial data infrastructure and 3d as the universal interface for AI in the built environment',
   },
   {
-    id: 'bim-digital-twin',
-    label: 'BIM to world model transition',
+    id: 'next-gen-bim',
+    label: 'next-generation BIM',
     icon: '🏗',
-    query: 'BIM digital twin world model transition asset management ISO 55000 IFC OpenUSD 2025 2026',
+    query: 'next generation BIM open schema IFC 5 OpenUSD world model transition asset management 2025 2026',
     description: 'from project delivery tools to persistent owner-controlled intelligence environments',
   },
   {
@@ -92,10 +92,10 @@ export const SUGGESTED_QUESTIONS = [
   'what is a world model and why does it matter more than a digital twin for infrastructure owners?',
   'how does 3d as code change what is possible for AI in the built environment?',
   'what does data sovereignty mean practically for an asset owner investing in AI right now?',
-  'how is the BIM lakehouse architecture different from current BIM platform approaches and why does it matter?',
   'what is physical AI and how does it connect to world model architecture for airports and transit systems?',
   'what should a design studio be building right now to stay relevant in a world model paradigm?',
   'how do generative world models differ architecturally from current digital twin implementations?',
-  'what are the real business consequences of BIM data locked in proprietary vendor platforms?',
+  'what are the real business consequences of spatial data locked in proprietary vendor platforms?',
   'which open data standards should infrastructure owners be building their architecture on today?',
+  'how is next-generation BIM different from current platform approaches and why does it matter?',
 ]
