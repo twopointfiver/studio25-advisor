@@ -161,7 +161,6 @@ export default function Dashboard() {
         button:focus{outline:none}
       `}</style>
 
-      {/* LOADING BANNER */}
       {isLoading && (
         <div style={{position:'fixed',top:52,left:0,right:0,zIndex:40,background:'#0a0a0a',borderBottom:'1.5px solid #7BC906',padding:'12px 32px',display:'flex',alignItems:'center',gap:14,animation:'fadeIn 0.2s ease'}}>
           <div style={{width:16,height:16,border:'2px solid rgba(123,201,6,0.2)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
@@ -175,109 +174,42 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* NAV */}
-      <nav style={{
-        position:'sticky',top:0,zIndex:50,
-        background:'#000000',
-        borderBottom:'0.5px solid rgba(255,255,255,0.08)',
-        height:52,
-        display:'flex',alignItems:'center',justifyContent:'space-between',
-        padding:'0 32px',
-      }}>
+      <nav style={{position:'sticky',top:0,zIndex:50,background:'#000000',borderBottom:'0.5px solid rgba(255,255,255,0.08)',height:52,display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 32px'}}>
         <img src={LOGO} style={{height:30,display:'block'}} alt="studio 2.5"/>
         <div style={{display:'flex',gap:8}}>
           {(['query','briefing'] as Mode[]).map(m => (
-            <button
-              key={m}
-              onClick={() => { setMode(m); setResult(null); setQuestion('') }}
+            <button key={m} onClick={() => { setMode(m); setResult(null); setQuestion('') }}
               className={`nav-pill${mode===m?' active':''}`}
-              style={{
-                background:'transparent',
-                border:'1.5px solid rgba(255,255,255,0.45)',
-                color:'#ffffff',
-                fontFamily:"'Plus Jakarta Sans',sans-serif",
-                fontSize:12,fontWeight:700,
-                padding:'7px 22px',
-                borderRadius:999,
-              }}>
+              style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.45)',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:12,fontWeight:700,padding:'7px 22px',borderRadius:999}}>
               {m==='query'?'strategic q&a':'signals briefings'}
             </button>
           ))}
         </div>
         <div style={{display:'flex',alignItems:'center',gap:16}}>
           <a href="https://studio25.xyz" style={{display:'flex',alignItems:'center',gap:6,color:'#7BC906',fontSize:12,fontWeight:700,textDecoration:'none',letterSpacing:'0.03em'}}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M15 12H9M12 9l-3 3 3 3"/>
-            </svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M15 12H9M12 9l-3 3 3 3"/></svg>
             studio 2.5.xyz
           </a>
           <UserButton afterSignOutUrl="/"/>
         </div>
       </nav>
 
-      {/* HERO — sticky, 400px, banner shifted to show full grass crown */}
-      <div style={{
-        position:'sticky',top:52,zIndex:30,
-        height:400,
-        overflow:'hidden',
-        background:'#000000',
-      }}>
-        <div style={{
-          position:'absolute',inset:0,
-          backgroundImage:`url(${BANNER})`,
-          backgroundSize:'cover',
-          backgroundPosition:'center 55%',
-          filter:'brightness(0.78) saturate(1.1)',
-        }}/>
+      <div style={{position:'sticky',top:52,zIndex:30,height:400,overflow:'hidden',background:'#000000'}}>
+        <div style={{position:'absolute',inset:0,backgroundImage:`url(${BANNER})`,backgroundSize:'cover',backgroundPosition:'center 55%',filter:'brightness(0.78) saturate(1.1)'}}/>
         <div style={{position:'absolute',bottom:0,left:0,right:0,height:160,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
         <div style={{position:'absolute',inset:0,background:'linear-gradient(to right,rgba(0,0,0,0.25) 0%,transparent 50%)',pointerEvents:'none'}}/>
-
-        {/* Left: label + large wordmark */}
         <div style={{position:'absolute',bottom:56,left:44}}>
-          <div style={{
-            fontFamily:"'Hedvig Letters Serif',serif",
-            fontStyle:'italic',
-            fontSize:17,
-            color:'rgba(255,255,255,0.85)',
-            marginBottom:18,
-          }}>
+          <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontStyle:'italic',fontSize:17,color:'rgba(255,255,255,0.85)',marginBottom:18}}>
             a new type of design company.
           </div>
-          {/* 130px — properly large */}
           <img src={LOGO} style={{height:130,display:'block'}} alt="studio 2.5"/>
         </div>
-
-        {/* Right: CTA card */}
-        <div style={{
-          position:'absolute',right:44,top:'50%',transform:'translateY(-50%)',
-          background:'rgba(0,0,0,0.88)',
-          borderRadius:18,
-          padding:'22px 24px',
-          width:280,
-          display:'flex',flexDirection:'column',gap:14,
-          backdropFilter:'blur(16px)',
-          border:'0.5px solid rgba(255,255,255,0.14)',
-        }}>
-          <button
-            onClick={() => { setMode('query'); setResult(null) }}
-            style={{
-              width:52,height:52,
-              borderRadius:12,
-              border:'2px solid #ffffff',
-              background:'transparent',
-              display:'flex',alignItems:'center',justifyContent:'center',
-              cursor:'pointer',
-              transition:'background 0.15s',
-              flexShrink:0,
-              color:'#ffffff',
-            }}
+        <div style={{position:'absolute',right:44,top:'50%',transform:'translateY(-50%)',background:'rgba(0,0,0,0.88)',borderRadius:18,padding:'22px 24px',width:280,display:'flex',flexDirection:'column',gap:14,backdropFilter:'blur(16px)',border:'0.5px solid rgba(255,255,255,0.14)'}}>
+          <button onClick={() => { setMode('query'); setResult(null) }}
+            style={{width:52,height:52,borderRadius:12,border:'2px solid #ffffff',background:'transparent',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',transition:'background 0.15s',flexShrink:0,color:'#ffffff'}}
             onMouseEnter={e => (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.1)'}
-            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background='transparent'}
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background='transparent'}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
           <p style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:12,color:'rgba(255,255,255,0.75)',lineHeight:1.65,margin:0}}>
             connect with the studio to find out how to turn these insights into actionable innovation outcomes.
@@ -285,25 +217,12 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* SCROLL CONTENT */}
-      <div style={{
-        position:'relative',zIndex:50,
-        background:'#000000',
-        minHeight:'100vh',
-        padding:'52px 0 80px',
-      }}>
+      <div style={{position:'relative',zIndex:50,background:'#000000',minHeight:'100vh',padding:'52px 0 80px'}}>
         <div style={{maxWidth:900,margin:'0 auto',padding:'0 32px'}}>
 
-          {/* QUERY MODE */}
           {mode==='query' && !result && (
             <>
-              <div style={{
-                background:'rgba(255,255,255,0.06)',
-                border:'1px solid rgba(255,255,255,0.18)',
-                borderRadius:16,
-                padding:'28px 32px 24px',
-                marginBottom:32,
-              }}>
+              <div style={{background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.18)',borderRadius:16,padding:'28px 32px 24px',marginBottom:32}}>
                 <textarea
                   value={question}
                   onChange={e => setQuestion(e.target.value)}
@@ -311,68 +230,21 @@ export default function Dashboard() {
                   placeholder="ask a question about world models and AI transformation."
                   disabled={isLoading}
                   rows={3}
-                  style={{
-                    width:'100%',
-                    background:'transparent',border:'none',outline:'none',
-                    color:'rgba(255,255,255,0.9)',
-                    fontFamily:"'Plus Jakarta Sans',sans-serif",
-                    fontSize:17,lineHeight:1.7,
-                    resize:'none',
-                    marginBottom:20,
-                    display:'block',
-                  }}
+                  style={{width:'100%',background:'transparent',border:'none',outline:'none',color:'rgba(255,255,255,0.9)',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:17,lineHeight:1.7,resize:'none',marginBottom:20,display:'block'}}
                 />
                 <div style={{display:'flex',justifyContent:'flex-end'}}>
-                  <button
-                    onClick={() => submitQuery()}
-                    disabled={isLoading||!question.trim()}
-                    className="research-btn"
-                    style={{
-                      background:'transparent',
-                      border:'1.5px solid rgba(255,255,255,0.55)',
-                      color:'#ffffff',
-                      fontFamily:"'Plus Jakarta Sans',sans-serif",
-                      fontSize:14,fontWeight:800,
-                      padding:'12px 40px',
-                      borderRadius:10,
-                      display:'flex',alignItems:'center',gap:10,
-                      opacity:(!question.trim()||isLoading)?0.3:1,
-                      transition:'all 0.15s',
-                      letterSpacing:'0.04em',
-                    }}
-                  >
+                  <button onClick={() => submitQuery()} disabled={isLoading||!question.trim()} className="research-btn"
+                    style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.55)',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:14,fontWeight:800,padding:'12px 40px',borderRadius:10,display:'flex',alignItems:'center',gap:10,opacity:(!question.trim()||isLoading)?0.3:1,transition:'all 0.15s',letterSpacing:'0.04em'}}>
                     research
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </button>
                 </div>
               </div>
-
-              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.3)',letterSpacing:'0.12em',textTransform:'lowercase',marginBottom:14}}>
-                suggested questions
-              </div>
+              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.3)',letterSpacing:'0.12em',textTransform:'lowercase',marginBottom:14}}>suggested questions</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 {SUGGESTED_QUESTIONS.map((q,i) => (
-                  <button
-                    key={i}
-                    onClick={() => submitQuery(q)}
-                    className="q-card"
-                    style={{
-                      textAlign:'left',
-                      background:'rgba(255,255,255,0.04)',
-                      border:'0.5px solid rgba(255,255,255,0.12)',
-                      borderRadius:10,
-                      padding:'16px 22px',
-                      cursor:'pointer',
-                      fontFamily:"'Plus Jakarta Sans',sans-serif",
-                      fontSize:14,fontWeight:500,
-                      color:'rgba(255,255,255,0.78)',
-                      lineHeight:1.55,
-                      transition:'all 0.15s',
-                      width:'100%',
-                    }}
-                  >
+                  <button key={i} onClick={() => submitQuery(q)} className="q-card"
+                    style={{textAlign:'left',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(255,255,255,0.12)',borderRadius:10,padding:'16px 22px',cursor:'pointer',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:14,fontWeight:500,color:'rgba(255,255,255,0.78)',lineHeight:1.55,transition:'all 0.15s',width:'100%'}}>
                     {q}
                   </button>
                 ))}
@@ -380,31 +252,13 @@ export default function Dashboard() {
             </>
           )}
 
-          {/* BRIEFING MODE */}
           {mode==='briefing' && !result && (
             <>
-              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.3)',letterSpacing:'0.12em',textTransform:'lowercase',marginBottom:14}}>
-                signal areas
-              </div>
+              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.3)',letterSpacing:'0.12em',textTransform:'lowercase',marginBottom:14}}>signal areas</div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
                 {SIGNAL_TOPICS.map(topic => (
-                  <button
-                    key={topic.id}
-                    onClick={() => submitBriefing(topic.id)}
-                    disabled={isLoading}
-                    className="topic-card"
-                    style={{
-                      display:'flex',alignItems:'center',gap:16,
-                      background:'rgba(255,255,255,0.03)',
-                      border:'0.5px solid rgba(255,255,255,0.1)',
-                      borderRadius:10,
-                      padding:'16px 22px',
-                      cursor:'pointer',textAlign:'left',width:'100%',
-                      transition:'all 0.15s',
-                      opacity:isLoading?0.5:1,
-                      color:'#ffffff',
-                    }}
-                  >
+                  <button key={topic.id} onClick={() => submitBriefing(topic.id)} disabled={isLoading} className="topic-card"
+                    style={{display:'flex',alignItems:'center',gap:16,background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.1)',borderRadius:10,padding:'16px 22px',cursor:'pointer',textAlign:'left',width:'100%',transition:'all 0.15s',opacity:isLoading?0.5:1,color:'#ffffff'}}>
                     <span style={{fontSize:20,flexShrink:0}}>{topic.icon}</span>
                     <div style={{flex:1}}>
                       <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,0.85)',marginBottom:3,fontFamily:"'Plus Jakarta Sans',sans-serif"}}>{topic.label}</div>
@@ -420,7 +274,6 @@ export default function Dashboard() {
             </>
           )}
 
-          {/* ERROR */}
           {error && (
             <div style={{background:'rgba(185,28,28,0.1)',border:'0.5px solid rgba(185,28,28,0.35)',borderRadius:10,padding:'12px 18px',fontSize:13,color:'#fca5a5',display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
               {error}
@@ -428,17 +281,9 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* RESULT */}
           {result && !isLoading && (
             <div style={{animation:'fadeIn 0.3s ease'}}>
-              <div style={{
-                background:'rgba(255,255,255,0.05)',
-                border:'0.5px solid rgba(255,255,255,0.12)',
-                borderRadius:14,
-                padding:'22px 28px',
-                marginBottom:8,
-                display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:20,
-              }}>
+              <div style={{background:'rgba(255,255,255,0.05)',border:'0.5px solid rgba(255,255,255,0.12)',borderRadius:14,padding:'22px 28px',marginBottom:8,display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:20}}>
                 <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
                   {result.question||result.topic}
                 </div>
@@ -460,43 +305,16 @@ export default function Dashboard() {
                 </div>
               )}
 
-              {/* Calendly CTA — green button, wide */}
-              <div style={{
-                display:'flex',
-                border:'0.5px solid rgba(255,255,255,0.1)',
-                borderRadius:14,
-                overflow:'hidden',
-                marginBottom:16,
-              }}>
+              <div style={{display:'flex',border:'0.5px solid rgba(255,255,255,0.1)',borderRadius:14,overflow:'hidden',marginBottom:16}}>
                 <div style={{flex:1,background:'rgba(255,255,255,0.04)',padding:'22px 28px'}}>
                   <div style={{fontSize:10,fontWeight:700,color:'rgba(123,201,6,0.55)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:8}}>from insight to outcome</div>
-                  <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.3}}>
-                    ready to turn this into a deliverable?
-                  </div>
+                  <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.3}}>ready to turn this into a deliverable?</div>
                   <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.45)',lineHeight:1.65}}>
                     studio 2.5 converts intelligence into scoped advisory outcomes, research reports, business cases, gap analyses, and transformation roadmaps, in 1 to 2 weeks.
                   </div>
                 </div>
-                <a
-                  href={CALENDLY}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="cta-book"
-                  style={{
-                    flexShrink:0,
-                    width:240,
-                    background:'#7BC906',
-                    display:'flex',alignItems:'center',justifyContent:'center',
-                    fontFamily:"'Plus Jakarta Sans',sans-serif",
-                    fontSize:15,fontWeight:800,
-                    color:'#121f04',
-                    textDecoration:'none',
-                    textAlign:'center' as const,
-                    padding:'0 24px',
-                    lineHeight:1.3,
-                    transition:'background 0.15s',
-                  }}
-                >
+                <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="cta-book"
+                  style={{flexShrink:0,width:240,background:'#7BC906',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:15,fontWeight:800,color:'#121f04',textDecoration:'none',textAlign:'center' as const,padding:'0 24px',lineHeight:1.3,transition:'background 0.15s'}}>
                   book a free conversation
                 </a>
               </div>
@@ -504,14 +322,16 @@ export default function Dashboard() {
               <button
                 onClick={() => { setResult(null); setQuestion('') }}
                 style={{
-                  fontSize:11,fontWeight:700,color:'rgba(255,255,255,0.35)',
+                  fontSize:11,
+                  fontWeight:700,
+                  color:'rgba(255,255,255,0.35)',
                   background:'transparent',
                   border:'0.5px solid rgba(255,255,255,0.1)',
-                  borderRadius:999,padding:'7px 18px',
+                  borderRadius:999,
+                  padding:'7px 18px',
                   cursor:'pointer',
                   fontFamily:"'Plus Jakarta Sans',sans-serif",
                   transition:'all 0.15s',
-                  color:'rgba(255,255,255,0.35)',
                 }}
               >
                 ← new {mode==='query'?'question':'briefing'}
@@ -521,20 +341,10 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* FOOTER */}
-      <div style={{
-        background:'#000000',
-        borderTop:'0.5px solid rgba(255,255,255,0.06)',
-        padding:'20px 32px',
-        display:'flex',alignItems:'center',justifyContent:'space-between',
-      }}>
+      <div style={{background:'#000000',borderTop:'0.5px solid rgba(255,255,255,0.06)',padding:'20px 32px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <img src={LOGO} style={{height:24,opacity:0.3}} alt="studio 2.5"/>
-        <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(255,255,255,0.15)'}}>
-          © 2026 studio 2.5 · advisor.studio25.xyz
-        </span>
-        <a href="https://studio25.xyz" style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.3)',textDecoration:'none'}}>
-          studio25.xyz →
-        </a>
+        <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(255,255,255,0.15)'}}>© 2026 studio 2.5 · advisor.studio25.xyz</span>
+        <a href="https://studio25.xyz" style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.3)',textDecoration:'none'}}>studio25.xyz →</a>
       </div>
     </div>
   )
