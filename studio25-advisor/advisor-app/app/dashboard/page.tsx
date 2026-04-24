@@ -4,7 +4,7 @@ import { UserButton } from '@clerk/nextjs'
 import { SIGNAL_TOPICS, SUGGESTED_QUESTIONS } from '@/lib/config'
 
 const CALENDLY = 'https://calendly.com/jeffrey-l-walter-studio25/jeff-walter-studio-2-5-connect?primary_color=6f9f25'
-const LOGO = 'https://studio25assets.pages.dev/studio25-logo.png'
+const LOGO = '/studio25-logo.png'
 
 type Mode = 'query' | 'briefing'
 type LoadingState = 'idle' | 'searching' | 'synthesizing' | 'done'
@@ -147,13 +147,14 @@ export default function Dashboard() {
         .md-cite{color:#6f9f25;font-size:0.68rem;font-weight:700;vertical-align:super;font-style:normal}
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-        .q-card:hover{background:rgba(255,255,255,0.06)!important;border-color:rgba(123,201,6,0.3)!important}
-        .topic-card:hover{background:rgba(255,255,255,0.05)!important;border-color:rgba(123,201,6,0.3)!important}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        .q-card:hover{background:rgba(255,255,255,0.08)!important;border-color:rgba(123,201,6,0.4)!important}
+        .topic-card:hover{background:rgba(255,255,255,0.06)!important;border-color:rgba(123,201,6,0.3)!important}
         .nav-pill{transition:all 0.15s;cursor:pointer}
         .nav-pill:hover{background:rgba(255,255,255,0.08)!important}
         .nav-pill.active{background:#ffffff!important;color:#000000!important;border-color:#ffffff!important}
-        .research-btn:hover:not(:disabled){background:rgba(255,255,255,0.12)!important}
+        .research-btn:hover:not(:disabled){background:rgba(255,255,255,0.1)!important}
+        .cta-book:hover{background:#8bda07!important}
       `}</style>
 
       {/* LOADING BANNER */}
@@ -211,29 +212,40 @@ export default function Dashboard() {
         </div>
       </nav>
 
-      {/* HERO (sticky) */}
+      {/* HERO — sticky, taller, image shifted down to show full grass */}
       <div style={{
         position:'sticky',top:52,zIndex:30,
-        height:320,
+        height:380,
         overflow:'hidden',
         background:'#000000',
       }}>
+        {/* BG — backgroundPosition center 60% pulls the image down to show more grass */}
         <div style={{
           position:'absolute',inset:0,
-          backgroundImage:'url(https://studio25assets.pages.dev/studio25-web-banner.jpg)',
+          backgroundImage:'url(/studio25-banner.jpg)',
           backgroundSize:'cover',
-          backgroundPosition:'center 35%',
-          filter:'brightness(0.75) saturate(1.1)',
+          backgroundPosition:'center 60%',
+          filter:'brightness(0.78) saturate(1.1)',
         }}/>
-        <div style={{position:'absolute',bottom:0,left:0,right:0,height:120,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
-        <div style={{position:'absolute',inset:0,background:'linear-gradient(to right, rgba(0,0,0,0.3) 0%, transparent 60%)',pointerEvents:'none'}}/>
+        {/* Fade to black at bottom */}
+        <div style={{position:'absolute',bottom:0,left:0,right:0,height:140,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
+        {/* Subtle left fade for text legibility */}
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(to right, rgba(0,0,0,0.35) 0%, transparent 55%)',pointerEvents:'none'}}/>
 
         {/* Left: label + large wordmark */}
-        <div style={{position:'absolute',bottom:44,left:44}}>
-          <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontStyle:'italic',fontSize:16,color:'rgba(255,255,255,0.85)',marginBottom:14,letterSpacing:'0.01em'}}>
+        <div style={{position:'absolute',bottom:52,left:44}}>
+          <div style={{
+            fontFamily:"'Hedvig Letters Serif',serif",
+            fontStyle:'italic',
+            fontSize:17,
+            color:'rgba(255,255,255,0.85)',
+            marginBottom:16,
+            letterSpacing:'0.01em',
+          }}>
             a new type of design company.
           </div>
-          <img src={LOGO} style={{height:80,display:'block'}} alt="studio 2.5"/>
+          {/* Large wordmark — 110px height */}
+          <img src={LOGO} style={{height:110,display:'block'}} alt="studio 2.5"/>
         </div>
 
         {/* Right: CTA card */}
@@ -272,25 +284,26 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* SCROLL CONTENT — all black */}
+      {/* SCROLL CONTENT */}
       <div style={{
         position:'relative',zIndex:50,
         background:'#000000',
         minHeight:'100vh',
         padding:'52px 0 80px',
       }}>
-        <div style={{maxWidth:860,margin:'0 auto',padding:'0 32px'}}>
+        <div style={{maxWidth:900,margin:'0 auto',padding:'0 32px'}}>
 
           {/* QUERY MODE */}
           {mode==='query' && !result && (
             <>
-              {/* Input block */}
+              {/* Input block — high contrast, Plus Jakarta Sans */}
               <div style={{
-                background:'rgba(255,255,255,0.04)',
-                border:'0.5px solid rgba(255,255,255,0.12)',
+                background:'rgba(255,255,255,0.07)',
+                border:'1px solid rgba(255,255,255,0.2)',
                 borderRadius:16,
-                padding:'24px 28px 20px',
+                padding:'28px 32px 24px',
                 marginBottom:32,
+                boxShadow:'0 0 0 1px rgba(123,201,6,0.08), 0 8px 32px rgba(0,0,0,0.4)',
               }}>
                 <textarea
                   value={question}
@@ -298,15 +311,15 @@ export default function Dashboard() {
                   onKeyDown={e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitQuery()} }}
                   placeholder="ask a question about world models and AI transformation."
                   disabled={isLoading}
-                  rows={2}
+                  rows={3}
                   style={{
                     width:'100%',
                     background:'transparent',border:'none',outline:'none',
-                    color:'rgba(255,255,255,0.8)',
-                    fontFamily:"'Hedvig Letters Serif',serif",
-                    fontSize:16,lineHeight:1.65,
+                    color:'rgba(255,255,255,0.92)',
+                    fontFamily:"'Plus Jakarta Sans',sans-serif",
+                    fontSize:17,lineHeight:1.7,
                     resize:'none',
-                    marginBottom:16,
+                    marginBottom:20,
                     boxSizing:'border-box' as const,
                   }}
                 />
@@ -317,21 +330,21 @@ export default function Dashboard() {
                     className="research-btn"
                     style={{
                       background:'transparent',
-                      border:'1.5px solid rgba(255,255,255,0.6)',
+                      border:'1.5px solid rgba(255,255,255,0.7)',
                       color:'#ffffff',
                       fontFamily:"'Plus Jakarta Sans',sans-serif",
-                      fontSize:13,fontWeight:800,
-                      padding:'10px 24px',
+                      fontSize:14,fontWeight:800,
+                      padding:'12px 36px',
                       borderRadius:10,
                       cursor:'pointer',
-                      display:'flex',alignItems:'center',gap:8,
-                      opacity:(!question.trim()||isLoading)?0.35:1,
+                      display:'flex',alignItems:'center',gap:10,
+                      opacity:(!question.trim()||isLoading)?0.3:1,
                       transition:'all 0.15s',
-                      letterSpacing:'0.03em',
+                      letterSpacing:'0.04em',
                     }}
                   >
                     research
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                       <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                   </button>
@@ -339,7 +352,7 @@ export default function Dashboard() {
               </div>
 
               {/* Suggested questions */}
-              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.35)',letterSpacing:'0.1em',textTransform:'lowercase',marginBottom:14}}>
+              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.3)',letterSpacing:'0.12em',textTransform:'lowercase',marginBottom:14}}>
                 suggested questions
               </div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
@@ -350,13 +363,15 @@ export default function Dashboard() {
                     className="q-card"
                     style={{
                       textAlign:'left',
-                      background:'rgba(255,255,255,0.03)',
-                      border:'0.5px solid rgba(255,255,255,0.1)',
+                      background:'rgba(255,255,255,0.04)',
+                      border:'0.5px solid rgba(255,255,255,0.12)',
                       borderRadius:10,
-                      padding:'16px 20px',
+                      padding:'16px 22px',
                       cursor:'pointer',
-                      fontFamily:"'Hedvig Letters Serif',serif",
-                      fontSize:14,color:'rgba(255,255,255,0.75)',lineHeight:1.55,
+                      fontFamily:"'Plus Jakarta Sans',sans-serif",
+                      fontSize:14,fontWeight:500,
+                      color:'rgba(255,255,255,0.78)',
+                      lineHeight:1.55,
                       transition:'all 0.15s',
                       width:'100%',
                     }}
@@ -371,7 +386,7 @@ export default function Dashboard() {
           {/* BRIEFING MODE */}
           {mode==='briefing' && !result && (
             <>
-              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.35)',letterSpacing:'0.1em',textTransform:'lowercase',marginBottom:14}}>
+              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.3)',letterSpacing:'0.12em',textTransform:'lowercase',marginBottom:14}}>
                 signal areas
               </div>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
@@ -386,7 +401,7 @@ export default function Dashboard() {
                       background:'rgba(255,255,255,0.03)',
                       border:'0.5px solid rgba(255,255,255,0.1)',
                       borderRadius:10,
-                      padding:'16px 20px',
+                      padding:'16px 22px',
                       cursor:'pointer',textAlign:'left',width:'100%',
                       transition:'all 0.15s',
                       opacity:isLoading?0.5:1,
@@ -399,7 +414,7 @@ export default function Dashboard() {
                     </div>
                     {activeTopic===topic.id&&isLoading
                       ? <div style={{width:14,height:14,border:'2px solid rgba(255,255,255,0.15)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
-                      : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     }
                   </button>
                 ))}
@@ -421,17 +436,17 @@ export default function Dashboard() {
 
               {/* Question header */}
               <div style={{
-                background:'rgba(255,255,255,0.04)',
-                border:'0.5px solid rgba(255,255,255,0.1)',
+                background:'rgba(255,255,255,0.05)',
+                border:'0.5px solid rgba(255,255,255,0.12)',
                 borderRadius:14,
                 padding:'22px 28px',
                 marginBottom:8,
                 display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:20,
               }}>
-                <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:17,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
+                <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
                   {result.question||result.topic}
                 </div>
-                <img src={LOGO} style={{height:20,flexShrink:0,marginTop:3,opacity:0.6}} alt="studio 2.5"/>
+                <img src={LOGO} style={{height:20,flexShrink:0,marginTop:3,opacity:0.5}} alt="studio 2.5"/>
               </div>
 
               {/* Answer */}
@@ -464,12 +479,12 @@ export default function Dashboard() {
                 overflow:'hidden',
                 marginBottom:16,
               }}>
-                <div style={{flex:1,background:'rgba(255,255,255,0.03)',padding:'22px 28px'}}>
+                <div style={{flex:1,background:'rgba(255,255,255,0.04)',padding:'22px 28px'}}>
                   <div style={{fontSize:10,fontWeight:700,color:'rgba(123,201,6,0.55)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:8}}>from insight to outcome</div>
-                  <div style={{fontSize:15,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.3}}>
+                  <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.3}}>
                     ready to turn this into a deliverable?
                   </div>
-                  <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:12,color:'rgba(255,255,255,0.45)',lineHeight:1.65}}>
+                  <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.45)',lineHeight:1.65}}>
                     studio 2.5 converts intelligence into scoped advisory outcomes, research reports, business cases, gap analyses, and transformation roadmaps, in 1 to 2 weeks.
                   </div>
                 </div>
@@ -477,20 +492,19 @@ export default function Dashboard() {
                   href={CALENDLY}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="cta-book"
                   style={{
-                    flexShrink:0,width:200,
+                    flexShrink:0,width:220,
                     background:'#7BC906',
                     display:'flex',alignItems:'center',justifyContent:'center',
                     fontFamily:"'Plus Jakarta Sans',sans-serif",
-                    fontSize:14,fontWeight:800,
+                    fontSize:15,fontWeight:800,
                     color:'#121f04',textDecoration:'none',
                     textAlign:'center' as const,
-                    padding:'0 20px',
+                    padding:'0 24px',
                     lineHeight:1.3,
                     transition:'background 0.15s',
                   }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.background='#8bda07'}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.background='#7BC906'}
                 >
                   book a free conversation
                 </a>
@@ -500,9 +514,9 @@ export default function Dashboard() {
               <button
                 onClick={() => { setResult(null); setQuestion('') }}
                 style={{
-                  fontSize:11,fontWeight:700,color:'rgba(255,255,255,0.4)',
+                  fontSize:11,fontWeight:700,color:'rgba(255,255,255,0.35)',
                   background:'transparent',
-                  border:'0.5px solid rgba(255,255,255,0.12)',
+                  border:'0.5px solid rgba(255,255,255,0.1)',
                   borderRadius:999,padding:'7px 18px',
                   cursor:'pointer',
                   fontFamily:"'Plus Jakarta Sans',sans-serif",
