@@ -1,139 +1,520 @@
-import Link from 'next/link'
-import { SignedIn, SignedOut } from '@clerk/nextjs'
+'use client'
+import { useState } from 'react'
+import { UserButton } from '@clerk/nextjs'
+import { SIGNAL_TOPICS, SUGGESTED_QUESTIONS } from '@/lib/config'
 
 const CALENDLY = 'https://calendly.com/jeffrey-l-walter-studio25/jeff-walter-studio-2-5-connect?primary_color=6f9f25'
 const LOGO = '/studio25-logo.png'
+const BANNER = '/studio25-banner.jpg'
 
-export default function Home() {
+type Mode = 'query' | 'briefing'
+type LoadingState = 'idle' | 'searching' | 'synthesizing' | 'done'
+
+interface Source { title: string; url: string }
+interface Result {
+  type: 'query' | 'briefing'
+  question?: string
+  topic?: string
+  answer?: string
+  briefing?: string
+  sources?: Source[]
+  timestamp: string
+}
+
+function renderMarkdown(text: string): string {
+  const lines = text.split('\n')
+  let html = ''
+  let inList = false
+  for (const line of lines) {
+    if (/^\s*$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      continue
+    }
+    if (/^### (.+)$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      html += `<h3 class="md-h3">${line.replace(/^### /, '')}</h3>`
+    } else if (/^## (.+)$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      html += `<h2 class="md-h2">${line.replace(/^## /, '')}</h2>`
+    } else if (/^# (.+)$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      html += `<h1 class="md-h1">${line.replace(/^# /, '')}</h1>`
+    } else if (/^---$/.test(line)) {
+      if (inList) { html += '</ul>'; inList = false }
+      html += '<hr class="md-hr"/>'
+    } else if (/^[*-] (.+)$/.test(line)) {
+      if (!inList) { html += '<ul class="md-ul">'; inList = true }
+      html += `<li class="md-li">${line.replace(/^[*-] /, '')}</li>`
+    } else if (/^\d+\. (.+)$/.test(line)) {
+      if (!inList) { html += '<ul class="md-ul">'; inList = true }
+      html += `<li class="md-li">${line.replace(/^\d+\. /, '')}</li>`
+    } else {
+      if (inList) { html += '</ul>'; inList = false }
+      let l = line
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\[(\d+)\]/g, '<cite class="md-cite">[$1]</cite>')
+      html += `<p class="md-p">${l}</p>`
+    }
+  }
+  if (inList) html += '</ul>'
+  return html
+}
+
+function SourceCard({ source }: { source: Source }) {
+  let domain = ''
+  try { domain = new URL(source.url).hostname.replace('www.', '') } catch {}
   return (
-    <main style={{minHeight:'100vh',background:'#000000',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif"}}>
+    <a href={source.url} target="_blank" rel="noopener noreferrer"
+      style={{display:'flex',alignItems:'flex-start',gap:10,padding:'12px 16px',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(255,255,255,0.1)',borderRadius:8,textDecoration:'none',transition:'all 0.15s'}}
+      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(123,201,6,0.4)'; el.style.background='rgba(255,255,255,0.07)' }}
+      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(255,255,255,0.1)'; el.style.background='rgba(255,255,255,0.04)' }}>
+      <div style={{flex:1,minWidth:0}}>
+        <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:10,color:'rgba(123,201,6,0.6)',letterSpacing:'0.03em',marginBottom:2}}>{domain}</div>
+        <div style={{fontSize:12,fontWeight:600,color:'rgba(255,255,255,0.8)',lineHeight:1.4}}>{source.title}</div>
+      </div>
+      <div style={{color:'rgba(123,201,6,0.5)',fontSize:12,flexShrink:0,marginTop:1}}>→</div>
+    </a>
+  )
+}
+
+export default function Dashboard() {
+  const [mode, setMode] = useState<Mode>('query')
+  const [question, setQuestion] = useState('')
+  const [loadingState, setLoadingState] = useState<LoadingState>('idle')
+  const [result, setResult] = useState<Result | null>(null)
+  const [error, setError] = useState('')
+  const [activeTopic, setActiveTopic] = useState<string | null>(null)
+
+  async function submitQuery(q?: string) {
+    const text = q || question
+    if (!text.trim() || loadingState !== 'idle') return
+    if (q) setQuestion(q)
+    setError(''); setResult(null); setLoadingState('searching')
+    setTimeout(() => setLoadingState('synthesizing'), 2500)
+    try {
+      const res = await fetch('/api/query', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({question: text})
+      })
+      const data = await res.json()
+      if (data.error) throw new Error(data.error)
+      setResult({ type: 'query', ...data })
+    } catch (e: any) {
+      setError(e.message || 'query failed')
+    } finally {
+      setLoadingState('done'); setTimeout(() => setLoadingState('idle'), 300)
+    }
+  }
+
+  async function submitBriefing(topicId: string) {
+    if (loadingState !== 'idle') return
+    setError(''); setResult(null); setActiveTopic(topicId); setLoadingState('searching')
+    setTimeout(() => setLoadingState('synthesizing'), 2500)
+    try {
+      const res = await fetch('/api/briefing', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({topicId})
+      })
+      const data = await res.json()
+      if (data.error) throw new Error(data.error)
+      setResult({ type: 'briefing', ...data })
+    } catch (e: any) {
+      setError(e.message || 'briefing failed')
+    } finally {
+      setLoadingState('done'); setActiveTopic(null); setTimeout(() => setLoadingState('idle'), 300)
+    }
+  }
+
+  const isLoading = loadingState === 'searching' || loadingState === 'synthesizing'
+  const bodyText = result?.answer || result?.briefing || ''
+
+  return (
+    <div style={{minHeight:'100vh',background:'#000000',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif"}}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
-        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.65)}}
-        .cta-btn:hover{opacity:0.9;transform:translateY(-1px)}
-        .cta-outline:hover{border-color:rgba(255,255,255,0.5)!important;color:#ffffff!important}
-        .cap-card:hover{border-color:rgba(123,201,6,0.3)!important}
-        .advisory-item:hover{border-color:rgba(123,201,6,0.4)!important;background:rgba(123,201,6,0.04)!important}
-        .book-btn:hover{background:#8bda07!important;transform:translateY(-1px);box-shadow:0 8px 28px rgba(123,201,6,0.35)!important}
-        @media(max-width:768px){
-          .above-fold{grid-template-columns:1fr!important;gap:40px!important}
-          .cta-panel{border-left:none!important;padding-left:0!important;border-top:0.5px solid rgba(255,255,255,0.06)!important;padding-top:40px!important}
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
+        *, *::before, *::after { box-sizing: border-box; }
+        .md-h1{font-size:1.15rem;font-weight:700;color:#121f04;margin:1.3rem 0 0.4rem}
+        .md-h2{font-size:1rem;font-weight:700;color:#121f04;margin:1.1rem 0 0.3rem;border-bottom:1px solid rgba(68,107,26,0.15);padding-bottom:4px}
+        .md-h3{font-size:0.875rem;font-weight:700;color:#446b1a;margin:0.9rem 0 0.25rem}
+        .md-p{margin-bottom:0.8rem;line-height:1.85;font-size:0.9rem;color:#0e1209}
+        .md-ul{margin:0.4rem 0 0.6rem 1.1rem}
+        .md-li{margin-bottom:0.25rem;font-size:0.9rem;line-height:1.75;color:#0e1209}
+        .md-hr{border:none;border-top:1px solid rgba(68,107,26,0.18);margin:1.1rem 0}
+        .md-cite{color:#6f9f25;font-size:0.68rem;font-weight:700;vertical-align:super;font-style:normal}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+        .q-card:hover{background:rgba(255,255,255,0.08)!important;border-color:rgba(123,201,6,0.35)!important}
+        .topic-card:hover{background:rgba(255,255,255,0.06)!important;border-color:rgba(123,201,6,0.3)!important}
+        .nav-pill{transition:all 0.15s;cursor:pointer;appearance:none;-webkit-appearance:none}
+        .nav-pill:hover{background:rgba(255,255,255,0.1)!important}
+        .nav-pill.active{background:#ffffff!important;color:#000000!important;border-color:#ffffff!important}
+        .research-btn{appearance:none;-webkit-appearance:none;cursor:pointer}
+        .research-btn:hover:not([disabled]){background:rgba(123,201,6,0.15)!important;border-color:#7BC906!important;color:#7BC906!important}
+        .research-btn:focus{outline:none}
+        .research-btn:active{outline:none}
+        .cta-book:hover{background:#8bda07!important}
+        button{-webkit-appearance:none;appearance:none}
+        button:focus{outline:none}
       `}</style>
 
+      {/* LOADING BANNER */}
+      {isLoading && (
+        <div style={{position:'fixed',top:52,left:0,right:0,zIndex:40,background:'#0a0a0a',borderBottom:'1.5px solid #7BC906',padding:'12px 32px',display:'flex',alignItems:'center',gap:14,animation:'fadeIn 0.2s ease'}}>
+          <div style={{width:16,height:16,border:'2px solid rgba(123,201,6,0.2)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
+          <div>
+            <div style={{fontSize:12,fontWeight:700,color:'#ffffff'}}>{loadingState==='searching'?'searching current sources...':'synthesizing intelligence...'}</div>
+            <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:10,color:'rgba(123,201,6,0.5)',marginTop:1}}>{loadingState==='searching'?'tavily retrieving real-time results':'claude synthesizing findings'}</div>
+          </div>
+          <div style={{marginLeft:'auto',display:'flex',gap:4}}>
+            {[0,1,2].map(i => <div key={i} style={{width:5,height:5,borderRadius:'50%',background:'#7BC906',animation:`pulse 1.4s ease-in-out ${i*0.2}s infinite`}}/>)}
+          </div>
+        </div>
+      )}
+
       {/* NAV */}
-      <nav style={{borderBottom:'0.5px solid rgba(255,255,255,0.08)',padding:'14px 32px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-        <img src={LOGO} alt="studio 2.5" style={{height:44}} />
-        <div style={{display:'flex',alignItems:'center',gap:12}}>
-          <SignedOut>
-            <Link href="/signin" style={{fontSize:'13px',fontWeight:600,color:'rgba(255,255,255,0.55)',textDecoration:'none',transition:'color 0.15s'}}>sign in</Link>
-            <Link href="/signup" style={{fontSize:'13px',fontWeight:700,background:'#7BC906',color:'#121f04',padding:'8px 20px',borderRadius:'20px',textDecoration:'none',transition:'opacity 0.15s'}}>get access</Link>
-          </SignedOut>
-          <SignedIn>
-            <Link href="/dashboard" style={{fontSize:'13px',fontWeight:700,background:'#7BC906',color:'#121f04',padding:'8px 20px',borderRadius:'20px',textDecoration:'none'}}>open advisor</Link>
-          </SignedIn>
+      <nav style={{
+        position:'sticky',top:0,zIndex:50,
+        background:'#000000',
+        borderBottom:'0.5px solid rgba(255,255,255,0.08)',
+        height:52,
+        display:'flex',alignItems:'center',justifyContent:'space-between',
+        padding:'0 32px',
+      }}>
+        <img src={LOGO} style={{height:30,display:'block'}} alt="studio 2.5"/>
+        <div style={{display:'flex',gap:8}}>
+          {(['query','briefing'] as Mode[]).map(m => (
+            <button
+              key={m}
+              onClick={() => { setMode(m); setResult(null); setQuestion('') }}
+              className={`nav-pill${mode===m?' active':''}`}
+              style={{
+                background:'transparent',
+                border:'1.5px solid rgba(255,255,255,0.45)',
+                color:'#ffffff',
+                fontFamily:"'Plus Jakarta Sans',sans-serif",
+                fontSize:12,fontWeight:700,
+                padding:'7px 22px',
+                borderRadius:999,
+              }}>
+              {m==='query'?'strategic q&a':'signals briefings'}
+            </button>
+          ))}
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:16}}>
+          <a href="https://studio25.xyz" style={{display:'flex',alignItems:'center',gap:6,color:'#7BC906',fontSize:12,fontWeight:700,textDecoration:'none',letterSpacing:'0.03em'}}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M15 12H9M12 9l-3 3 3 3"/>
+            </svg>
+            studio 2.5.xyz
+          </a>
+          <UserButton afterSignOutUrl="/"/>
         </div>
       </nav>
 
-      {/* ABOVE THE FOLD */}
-      <div style={{maxWidth:1080,margin:'0 auto',padding:'56px 32px 64px'}}>
-        <div className="above-fold" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:64,alignItems:'start'}}>
+      {/* HERO */}
+      <div style={{
+        position:'sticky',top:52,zIndex:30,
+        height:400,
+        overflow:'hidden',
+        background:'#000000',
+      }}>
+        <div style={{
+          position:'absolute',inset:0,
+          backgroundImage:`url(${BANNER})`,
+          backgroundSize:'cover',
+          backgroundPosition:'center 55%',
+          filter:'brightness(0.78) saturate(1.1)',
+        }}/>
+        <div style={{position:'absolute',bottom:0,left:0,right:0,height:160,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(to right,rgba(0,0,0,0.25) 0%,transparent 50%)',pointerEvents:'none'}}/>
 
-          {/* LEFT: hero */}
-          <div>
-            <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(123,201,6,0.08)',border:'0.5px solid rgba(123,201,6,0.25)',borderRadius:'20px',padding:'6px 16px',marginBottom:24}}>
-              <div style={{width:6,height:6,borderRadius:'50%',background:'#7BC906',animation:'pulse 2.5s ease-in-out infinite'}}/>
-              <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'11px',color:'rgba(123,201,6,0.8)',letterSpacing:'0.04em'}}>executive advisory · infrastructure AI transformation</span>
-            </div>
-            <h1 style={{fontSize:'clamp(32px,4.5vw,58px)',fontWeight:700,lineHeight:1.05,marginBottom:20,letterSpacing:'-0.03em'}}>
-              intelligence for<br/>
-              <span style={{color:'#7BC906'}}>infrastructure leaders</span>
-            </h1>
-            <p style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'16px',color:'rgba(255,255,255,0.55)',lineHeight:1.8,maxWidth:480,marginBottom:12}}>
-              real-time research intelligence and strategic advisory for executives navigating AI transformation in airports, transit, utilities, and capital infrastructure programs.
-            </p>
-            <p style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'13px',color:'rgba(255,255,255,0.3)',lineHeight:1.8,maxWidth:440,marginBottom:36}}>
-              ask any question about infrastructure AI transformation and receive a researched, evidence-based answer grounded in current developments.
-            </p>
-            <div style={{display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
-              <SignedOut>
-                <Link href="/signup" className="cta-btn" style={{background:'#7BC906',color:'#121f04',fontWeight:700,padding:'13px 26px',borderRadius:'10px',textDecoration:'none',fontSize:'14px',transition:'all 0.15s',display:'inline-block'}}>
-                  request access
-                </Link>
-                <Link href="/signin" className="cta-outline" style={{border:'0.5px solid rgba(255,255,255,0.2)',color:'rgba(255,255,255,0.55)',fontWeight:600,padding:'13px 26px',borderRadius:'10px',textDecoration:'none',fontSize:'14px',transition:'all 0.15s',display:'inline-block'}}>
-                  sign in
-                </Link>
-              </SignedOut>
-              <SignedIn>
-                <Link href="/dashboard" className="cta-btn" style={{background:'#7BC906',color:'#121f04',fontWeight:700,padding:'13px 26px',borderRadius:'10px',textDecoration:'none',fontSize:'14px',transition:'all 0.15s',display:'inline-block'}}>
-                  open advisor
-                </Link>
-              </SignedIn>
-            </div>
+        <div style={{position:'absolute',bottom:56,left:44}}>
+          <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontStyle:'italic',fontSize:17,color:'rgba(255,255,255,0.85)',marginBottom:18}}>
+            a new type of design company.
           </div>
+          <img src={LOGO} style={{height:130,display:'block'}} alt="studio 2.5"/>
+        </div>
 
-          {/* RIGHT: advisory CTA panel */}
-          <div className="cta-panel" style={{borderLeft:'0.5px solid rgba(255,255,255,0.06)',paddingLeft:48}}>
-            <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14}}>
-              <div style={{width:20,height:1,background:'rgba(123,201,6,0.5)'}}/>
-              <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'10px',color:'rgba(123,201,6,0.6)',letterSpacing:'0.1em',textTransform:'uppercase'}}>from insight to outcome</span>
-            </div>
-            <h2 style={{fontSize:'clamp(18px,2.2vw,28px)',fontWeight:700,lineHeight:1.2,letterSpacing:'-0.02em',marginBottom:14}}>
-              what a big advisory firm takes<br/>
-              <span style={{color:'#7BC906'}}>6 months to produce.</span><br/>
-              delivered in 1 to 2 weeks.
-            </h2>
-            <p style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'13px',color:'rgba(255,255,255,0.45)',lineHeight:1.8,marginBottom:20}}>
-              studio 2.5 converts intelligence into concrete advisory deliverables, scoped and structured for executive action, drawing on a partner ecosystem of world model platforms, spatial intelligence tools, and lifecycle infrastructure specialists.
-            </p>
-            <div style={{display:'flex',flexDirection:'column',gap:6,marginBottom:24}}>
-              {[
-                {icon:'📊',title:'research, market or trend report'},
-                {icon:'⚡',title:'rapid business case'},
-                {icon:'🔍',title:'gap analysis and recommendation'},
-                {icon:'🗺️',title:'innovation or transformation roadmap'},
-              ].map(item => (
-                <div key={item.title} className="advisory-item" style={{display:'flex',gap:10,padding:'11px 14px',background:'rgba(255,255,255,0.02)',border:'0.5px solid rgba(255,255,255,0.07)',borderRadius:8,transition:'all 0.15s',alignItems:'center'}}>
-                  <span style={{fontSize:16,flexShrink:0}}>{item.icon}</span>
-                  <div style={{fontSize:'12px',fontWeight:600,color:'rgba(255,255,255,0.8)'}}>{item.title}</div>
-                </div>
-              ))}
-            </div>
-            <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="book-btn"
-              style={{display:'inline-flex',alignItems:'center',gap:8,background:'#7BC906',color:'#121f04',fontWeight:700,fontSize:'13px',padding:'13px 24px',borderRadius:'10px',textDecoration:'none',transition:'all 0.18s',boxShadow:'0 4px 20px rgba(123,201,6,0.2)'}}>
-              book a free 30 min conversation
-            </a>
-            <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'11px',color:'rgba(123,201,6,0.4)',marginTop:8}}>no commitment, scoped in the first conversation</div>
-          </div>
+        <div style={{
+          position:'absolute',right:44,top:'50%',transform:'translateY(-50%)',
+          background:'rgba(0,0,0,0.88)',
+          borderRadius:18,
+          padding:'22px 24px',
+          width:280,
+          display:'flex',flexDirection:'column',gap:14,
+          backdropFilter:'blur(16px)',
+          border:'0.5px solid rgba(255,255,255,0.14)',
+        }}>
+          <button
+            onClick={() => { setMode('query'); setResult(null) }}
+            style={{
+              width:52,height:52,
+              borderRadius:12,
+              border:'2px solid #ffffff',
+              background:'transparent',
+              display:'flex',alignItems:'center',justifyContent:'center',
+              cursor:'pointer',
+              transition:'background 0.15s',
+              flexShrink:0,
+              color:'#ffffff',
+            }}
+            onMouseEnter={e => (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.1)'}
+            onMouseLeave={e => (e.currentTarget as HTMLElement).style.background='transparent'}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+          <p style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:12,color:'rgba(255,255,255,0.75)',lineHeight:1.65,margin:0}}>
+            connect with the studio to find out how to turn these insights into actionable innovation outcomes.
+          </p>
         </div>
       </div>
 
-      {/* CAPABILITY CARDS */}
-      <div style={{borderTop:'0.5px solid rgba(255,255,255,0.05)',background:'rgba(255,255,255,0.01)'}}>
-        <div style={{maxWidth:1080,margin:'0 auto',padding:'48px 32px 64px'}}>
-          <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'10px',color:'rgba(255,255,255,0.2)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:20}}>what the advisor does</div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))',gap:10}}>
-            {[
-              {num:'01',title:'strategic Q&A',desc:'ask any question about world models, 3d as code, and infrastructure AI transformation. get a researched, cited answer grounded in current evidence.'},
-              {num:'02',title:'signal briefings',desc:'select from 8 signal areas and receive a concise intelligence briefing on what is happening right now.'},
-              {num:'03',title:'domain-specific',desc:'every response is grounded in the studio 2.5 advisory framework, covering world models, 3d as code, physical AI, and spatial intelligence.'},
-            ].map(card => (
-              <div key={card.num} className="cap-card" style={{border:'0.5px solid rgba(255,255,255,0.08)',borderRadius:12,padding:24,background:'rgba(255,255,255,0.02)',transition:'border-color 0.15s'}}>
-                <div style={{fontSize:'11px',fontWeight:700,color:'rgba(123,201,6,0.5)',letterSpacing:'0.06em',marginBottom:10}}>{card.num}</div>
-                <div style={{fontWeight:600,fontSize:'14px',marginBottom:8}}>{card.title}</div>
-                <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'12px',color:'rgba(255,255,255,0.4)',lineHeight:1.65}}>{card.desc}</div>
+      {/* SCROLL CONTENT */}
+      <div style={{position:'relative',zIndex:50,background:'#000000',minHeight:'100vh',padding:'52px 0 80px'}}>
+        <div style={{maxWidth:900,margin:'0 auto',padding:'0 32px'}}>
+
+          {/* QUERY MODE */}
+          {mode==='query' && !result && (
+            <>
+              <div style={{
+                background:'rgba(255,255,255,0.06)',
+                border:'1px solid rgba(255,255,255,0.18)',
+                borderRadius:16,
+                padding:'28px 32px 24px',
+                marginBottom:32,
+              }}>
+                <textarea
+                  value={question}
+                  onChange={e => setQuestion(e.target.value)}
+                  onKeyDown={e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitQuery()} }}
+                  placeholder="ask a question about world models and AI transformation."
+                  disabled={isLoading}
+                  rows={3}
+                  style={{
+                    width:'100%',
+                    background:'transparent',border:'none',outline:'none',
+                    color:'rgba(255,255,255,0.9)',
+                    fontFamily:"'Plus Jakarta Sans',sans-serif",
+                    fontSize:17,lineHeight:1.7,
+                    resize:'none',
+                    marginBottom:20,
+                    display:'block',
+                  }}
+                />
+                <div style={{display:'flex',justifyContent:'flex-end'}}>
+                  <button
+                    onClick={() => submitQuery()}
+                    disabled={isLoading||!question.trim()}
+                    className="research-btn"
+                    style={{
+                      background:'transparent',
+                      border:'1.5px solid rgba(255,255,255,0.55)',
+                      color:'#ffffff',
+                      fontFamily:"'Plus Jakarta Sans',sans-serif",
+                      fontSize:14,fontWeight:800,
+                      padding:'12px 40px',
+                      borderRadius:10,
+                      display:'flex',alignItems:'center',gap:10,
+                      opacity:(!question.trim()||isLoading)?0.3:1,
+                      transition:'all 0.15s',
+                      letterSpacing:'0.04em',
+                    }}
+                  >
+                    research
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </button>
+                </div>
               </div>
-            ))}
-          </div>
+
+              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.3)',letterSpacing:'0.12em',textTransform:'lowercase',marginBottom:14}}>
+                suggested questions
+              </div>
+              <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                {SUGGESTED_QUESTIONS.map((q,i) => (
+                  <button
+                    key={i}
+                    onClick={() => submitQuery(q)}
+                    className="q-card"
+                    style={{
+                      textAlign:'left',
+                      background:'rgba(255,255,255,0.04)',
+                      border:'0.5px solid rgba(255,255,255,0.12)',
+                      borderRadius:10,
+                      padding:'16px 22px',
+                      cursor:'pointer',
+                      fontFamily:"'Plus Jakarta Sans',sans-serif",
+                      fontSize:14,fontWeight:500,
+                      color:'rgba(255,255,255,0.78)',
+                      lineHeight:1.55,
+                      transition:'all 0.15s',
+                      width:'100%',
+                    }}
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* BRIEFING MODE */}
+          {mode==='briefing' && !result && (
+            <>
+              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.3)',letterSpacing:'0.12em',textTransform:'lowercase',marginBottom:14}}>
+                signal areas
+              </div>
+              <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                {SIGNAL_TOPICS.map(topic => (
+                  <button
+                    key={topic.id}
+                    onClick={() => submitBriefing(topic.id)}
+                    disabled={isLoading}
+                    className="topic-card"
+                    style={{
+                      display:'flex',alignItems:'center',gap:16,
+                      background:'rgba(255,255,255,0.03)',
+                      border:'0.5px solid rgba(255,255,255,0.1)',
+                      borderRadius:10,
+                      padding:'16px 22px',
+                      cursor:'pointer',textAlign:'left',width:'100%',
+                      transition:'all 0.15s',
+                      opacity:isLoading?0.5:1,
+                      color:'#ffffff',
+                    }}
+                  >
+                    <span style={{fontSize:20,flexShrink:0}}>{topic.icon}</span>
+                    <div style={{flex:1}}>
+                      <div style={{fontSize:14,fontWeight:700,color:'rgba(255,255,255,0.85)',marginBottom:3,fontFamily:"'Plus Jakarta Sans',sans-serif"}}>{topic.label}</div>
+                      <div style={{fontSize:12,color:'rgba(255,255,255,0.4)',fontFamily:"'Hedvig Letters Serif',serif",lineHeight:1.5}}>{topic.description}</div>
+                    </div>
+                    {activeTopic===topic.id&&isLoading
+                      ? <div style={{width:14,height:14,border:'2px solid rgba(255,255,255,0.15)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
+                      : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    }
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* ERROR */}
+          {error && (
+            <div style={{background:'rgba(185,28,28,0.1)',border:'0.5px solid rgba(185,28,28,0.35)',borderRadius:10,padding:'12px 18px',fontSize:13,color:'#fca5a5',display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
+              {error}
+              <button onClick={()=>setError('')} style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontWeight:700,fontSize:12}}>dismiss</button>
+            </div>
+          )}
+
+          {/* RESULT */}
+          {result && !isLoading && (
+            <div style={{animation:'fadeIn 0.3s ease'}}>
+              <div style={{
+                background:'rgba(255,255,255,0.05)',
+                border:'0.5px solid rgba(255,255,255,0.12)',
+                borderRadius:14,
+                padding:'22px 28px',
+                marginBottom:8,
+                display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:20,
+              }}>
+                <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
+                  {result.question||result.topic}
+                </div>
+                <img src={LOGO} style={{height:20,flexShrink:0,marginTop:3,opacity:0.5}} alt="studio 2.5"/>
+              </div>
+
+              <div style={{background:'#ffffff',borderRadius:14,padding:'28px 32px',marginBottom:8}}>
+                <div dangerouslySetInnerHTML={{__html:renderMarkdown(bodyText)}}/>
+              </div>
+
+              {result.sources && result.sources.length > 0 && (
+                <div style={{background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.08)',borderRadius:14,padding:'18px 22px',marginBottom:8}}>
+                  <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.3)',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
+                    sources · {result.sources.length} retrieved
+                  </div>
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
+                    {result.sources.map((s,i) => <SourceCard key={i} source={s}/>)}
+                  </div>
+                </div>
+              )}
+
+              <div style={{display:'flex',border:'0.5px solid rgba(255,255,255,0.1)',borderRadius:14,overflow:'hidden',marginBottom:16}}>
+                <div style={{flex:1,background:'rgba(255,255,255,0.04)',padding:'22px 28px'}}>
+                  <div style={{fontSize:10,fontWeight:700,color:'rgba(123,201,6,0.55)',letterSpacing:'0.1em',textTransform:'uppercase',marginBottom:8}}>from insight to outcome</div>
+                  <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.3}}>
+                    ready to turn this into a deliverable?
+                  </div>
+                  <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.45)',lineHeight:1.65}}>
+                    studio 2.5 converts intelligence into scoped advisory outcomes, research reports, business cases, gap analyses, and transformation roadmaps, in 1 to 2 weeks.
+                  </div>
+                </div>
+                <a
+                  href={CALENDLY}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="cta-book"
+                  style={{
+                    flexShrink:0,
+                    width:240,
+                    background:'#7BC906',
+                    display:'flex',alignItems:'center',justifyContent:'center',
+                    fontFamily:"'Plus Jakarta Sans',sans-serif",
+                    fontSize:15,fontWeight:800,
+                    color:'#121f04',
+                    textDecoration:'none',
+                    textAlign:'center' as const,
+                    padding:'0 24px',
+                    lineHeight:1.3,
+                    transition:'background 0.15s',
+                  }}
+                >
+                  book a free conversation
+                </a>
+              </div>
+
+              <button
+                onClick={() => { setResult(null); setQuestion('') }}
+                style={{
+                  fontSize:11,fontWeight:700,
+                  background:'transparent',
+                  border:'0.5px solid rgba(255,255,255,0.1)',
+                  borderRadius:999,padding:'7px 18px',
+                  cursor:'pointer',
+                  fontFamily:"'Plus Jakarta Sans',sans-serif",
+                  transition:'all 0.15s',
+                  color:'rgba(255,255,255,0.35)',
+                }}
+              >
+                ← new {mode==='query'?'question':'briefing'}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* FOOTER */}
-      <div style={{borderTop:'0.5px solid rgba(255,255,255,0.06)',padding:'28px 32px',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:12}}>
-        <img src={LOGO} alt="studio 2.5" style={{height:28,opacity:0.35}} />
-        <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'11px',color:'rgba(255,255,255,0.2)'}}>© 2026 studio 2.5 · ontario, canada · advisor.studio25.xyz</div>
-        <a href="https://studio25.xyz" style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:'11px',color:'rgba(123,201,6,0.35)',textDecoration:'none'}}>studio25.xyz</a>
+      <div style={{
+        background:'#000000',
+        borderTop:'0.5px solid rgba(255,255,255,0.06)',
+        padding:'20px 32px',
+        display:'flex',alignItems:'center',justifyContent:'space-between',
+      }}>
+        <img src={LOGO} style={{height:24,opacity:0.3}} alt="studio 2.5"/>
+        <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(255,255,255,0.15)'}}>
+          © 2026 studio 2.5 · advisor.studio25.xyz
+        </span>
+        <a href="https://studio25.xyz" style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.3)',textDecoration:'none'}}>
+          studio25.xyz →
+        </a>
       </div>
-    </main>
+    </div>
   )
 }
