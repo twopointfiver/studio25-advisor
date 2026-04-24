@@ -147,7 +147,7 @@ export default function Dashboard() {
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
         @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes glow{0%,100%{box-shadow:0 0 16px rgba(123,201,6,0.35)}50%{box-shadow:0 0 32px rgba(123,201,6,0.7)}}
+        @keyframes glow{0%,100%{box-shadow:0 0 16px rgba(123,201,6,0.35)}50%{box-shadow:0 0 36px rgba(123,201,6,0.75)}}
         .q-card:hover{background:rgba(255,255,255,0.06)!important;border-color:rgba(123,201,6,0.35)!important;transform:translateX(3px)}
         .topic-card:hover{background:rgba(123,201,6,0.07)!important;border-color:rgba(123,201,6,0.35)!important}
         .nav-pill{transition:all 0.15s;cursor:pointer;appearance:none;-webkit-appearance:none}
@@ -174,7 +174,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* NAV — logo is 240x240 square, height:36px = compact nav logo */}
+      {/* NAV */}
       <nav style={{
         position:'sticky',top:0,zIndex:50,
         background:'#000000',
@@ -202,11 +202,7 @@ export default function Dashboard() {
         </div>
       </nav>
 
-      {/* HERO
-          Banner is 1240x500px. To show it fully without cutting:
-          - hero height = 500px (matches banner natural height)  
-          - backgroundSize = cover, backgroundPosition = center center
-          - this shows the full grass from edge to edge */}
+      {/* HERO — 500px to match banner natural height, center center shows full grass */}
       <div style={{
         position:'sticky',top:56,zIndex:30,
         height:500,
@@ -218,31 +214,43 @@ export default function Dashboard() {
           backgroundImage:`url(${BANNER})`,
           backgroundSize:'cover',
           backgroundPosition:'center center',
-          filter:'brightness(0.75) saturate(1.1)',
+          filter:'brightness(0.72) saturate(1.1)',
         }}/>
-        {/* Fade bottom to black */}
         <div style={{position:'absolute',bottom:0,left:0,right:0,height:200,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
-        {/* Left shadow for text contrast */}
-        <div style={{position:'absolute',top:0,left:0,bottom:0,width:'45%',background:'linear-gradient(to right,rgba(0,0,0,0.55),transparent)',pointerEvents:'none'}}/>
+        <div style={{position:'absolute',top:0,left:0,bottom:0,width:'60%',background:'linear-gradient(to right,rgba(0,0,0,0.6),transparent)',pointerEvents:'none'}}/>
 
-        {/* Left: label + wordmark
-            Logo is 240x240. height:110px renders it at 110x110 — large but not massive */}
-        <div style={{position:'absolute',bottom:80,left:48}}>
+        {/* Left: label + MASSIVE headline */}
+        <div style={{position:'absolute',bottom:60,left:48,right:'40%'}}>
+          {/* Subline — no italics, small but readable */}
           <div style={{
-            fontFamily:"'Hedvig Letters Serif',serif",
-            fontStyle:'italic',
-            fontSize:17,
-            color:'rgba(255,255,255,0.82)',
-            marginBottom:16,
-            letterSpacing:'0.01em',
-            textShadow:'0 1px 8px rgba(0,0,0,0.6)',
+            fontFamily:"'Plus Jakarta Sans',sans-serif",
+            fontSize:14,
+            fontWeight:500,
+            color:'rgba(255,255,255,0.7)',
+            marginBottom:12,
+            letterSpacing:'0.04em',
+            textTransform:'lowercase',
           }}>
             a new type of design company.
           </div>
-          <img src={LOGO} style={{height:110,width:'auto',display:'block'}} alt="studio 2.5"/>
+          {/* LOGO */}
+          <img src={LOGO} style={{height:36,width:'auto',display:'block',marginBottom:20,opacity:0.9}} alt="studio 2.5"/>
+          {/* MASSIVE HEADLINE — clamp from 72px to 120px, fills the red outline */}
+          <div style={{
+            fontFamily:"'Plus Jakarta Sans',sans-serif",
+            fontSize:'clamp(72px, 9vw, 120px)',
+            fontWeight:800,
+            lineHeight:0.92,
+            color:'#ffffff',
+            letterSpacing:'-0.03em',
+            textShadow:'0 2px 20px rgba(0,0,0,0.5)',
+          }}>
+            how to<br/>
+            <span style={{color:'#7BC906'}}>grow 3d.</span>
+          </div>
         </div>
 
-        {/* Right: CTA card — positioned so it fits within 500px hero */}
+        {/* Right: CTA card */}
         <div style={{
           position:'absolute',
           right:48,
@@ -255,7 +263,6 @@ export default function Dashboard() {
           backdropFilter:'blur(20px)',
           border:'1px solid rgba(255,255,255,0.14)',
         }}>
-          {/* Arrow button — glowing green, links to Calendly */}
           <a
             href={CALENDLY}
             target="_blank"
@@ -308,7 +315,6 @@ export default function Dashboard() {
 
           {mode==='query' && !result && (
             <>
-              {/* Question box — dark green with bright border, not a flat olive */}
               <div style={{
                 background:'rgba(12,22,4,0.97)',
                 border:'1.5px solid #7BC906',
