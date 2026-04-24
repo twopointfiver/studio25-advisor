@@ -136,19 +136,19 @@ export default function Dashboard() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
         *, *::before, *::after { box-sizing: border-box; }
-        .md-h1{font-size:1.15rem;font-weight:700;color:#121f04;margin:1.3rem 0 0.4rem}
-        .md-h2{font-size:1rem;font-weight:700;color:#121f04;margin:1.1rem 0 0.3rem;border-bottom:1px solid rgba(68,107,26,0.15);padding-bottom:4px}
-        .md-h3{font-size:0.875rem;font-weight:700;color:#446b1a;margin:0.9rem 0 0.25rem}
-        .md-p{margin-bottom:0.8rem;line-height:1.85;font-size:0.9rem;color:#0e1209}
+        .md-h1{font-size:1.1rem;font-weight:700;color:#121f04;margin:1.2rem 0 0.4rem}
+        .md-h2{font-size:0.95rem;font-weight:700;color:#121f04;margin:1rem 0 0.3rem;border-bottom:1px solid rgba(68,107,26,0.15);padding-bottom:4px}
+        .md-h3{font-size:0.875rem;font-weight:700;color:#446b1a;margin:0.8rem 0 0.25rem}
+        .md-p{margin-bottom:0.75rem;line-height:1.85;font-size:0.875rem;color:#0e1209}
         .md-ul{margin:0.4rem 0 0.6rem 1.1rem}
-        .md-li{margin-bottom:0.25rem;font-size:0.9rem;line-height:1.75;color:#0e1209}
-        .md-hr{border:none;border-top:1px solid rgba(68,107,26,0.18);margin:1.1rem 0}
+        .md-li{margin-bottom:0.25rem;font-size:0.875rem;line-height:1.75;color:#0e1209}
+        .md-hr{border:none;border-top:1px solid rgba(68,107,26,0.18);margin:1rem 0}
         .md-cite{color:#6f9f25;font-size:0.68rem;font-weight:700;vertical-align:super;font-style:normal}
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
         @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
         @keyframes glow{0%,100%{box-shadow:0 0 16px rgba(123,201,6,0.35)}50%{box-shadow:0 0 36px rgba(123,201,6,0.75)}}
-        .q-card:hover{background:rgba(255,255,255,0.06)!important;border-color:rgba(123,201,6,0.35)!important;transform:translateX(3px)}
+        .q-card:hover{background:rgba(255,255,255,0.06)!important;border-color:rgba(123,201,6,0.35)!important}
         .topic-card:hover{background:rgba(123,201,6,0.07)!important;border-color:rgba(123,201,6,0.35)!important}
         .nav-pill{transition:all 0.15s;cursor:pointer;appearance:none;-webkit-appearance:none}
         .nav-pill:hover{background:rgba(255,255,255,0.1)!important}
@@ -159,14 +159,53 @@ export default function Dashboard() {
         button:focus{outline:none}
         .research-btn:hover:not([disabled]){background:#8bda07!important}
         .research-btn:focus{outline:none}
+
+        /* ── MOBILE ── */
+        @media (max-width: 640px) {
+          .nav-inner{padding: 0 16px !important}
+          .nav-logo{height: 30px !important}
+          .nav-pills{gap: 6px !important}
+          .nav-pill{font-size: 10px !important; padding: 6px 10px !important}
+          .nav-right{gap: 8px !important}
+          .nav-studio-link{display: none !important}
+
+          .hero-inner{height: auto !important; min-height: 320px !important}
+          .hero-left{bottom: 20px !important; left: 16px !important; right: 16px !important}
+          .hero-label{font-size: 12px !important; margin-bottom: 8px !important}
+          .hero-logo{height: 28px !important}
+          .hero-headline{font-size: clamp(48px, 13vw, 72px) !important; margin-top: 10px !important}
+          .hero-cta-card{display: none !important}
+          .hero-mobile-cta{display: flex !important}
+
+          .content-inner{padding: 0 16px !important}
+          .question-box{padding: 18px 16px 16px !important}
+          .question-textarea{font-size: 15px !important}
+          .research-row{flex-direction: column !important; align-items: flex-start !important; gap: 10px !important}
+          .research-btn{width: 100% !important; justify-content: center !important; padding: 12px 20px !important}
+          .research-hint{font-size: 10px !important}
+
+          .q-card{font-size: 13px !important; padding: 12px 16px !important}
+          .topic-card{padding: 12px 14px !important}
+          .topic-label{font-size: 13px !important}
+
+          .result-header{padding: 16px !important}
+          .result-q-text{font-size: 14px !important}
+          .result-body{padding: 20px 18px !important}
+          .sources-grid{grid-template-columns: 1fr !important}
+
+          .calendly-cta{flex-direction: column !important}
+          .calendly-cta-btn{width: 100% !important; min-height: 56px !important}
+
+          .footer-inner{flex-direction: column !important; gap: 8px !important; text-align: center !important; padding: 16px !important}
+        }
       `}</style>
 
       {isLoading && (
-        <div style={{position:'fixed',top:56,left:0,right:0,zIndex:40,background:'#0a0a0a',borderBottom:'1.5px solid #7BC906',padding:'12px 32px',display:'flex',alignItems:'center',gap:14,animation:'fadeIn 0.2s ease'}}>
-          <div style={{width:16,height:16,border:'2px solid rgba(123,201,6,0.2)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
+        <div style={{position:'fixed',top:56,left:0,right:0,zIndex:40,background:'#0a0a0a',borderBottom:'1.5px solid #7BC906',padding:'10px 16px',display:'flex',alignItems:'center',gap:12,animation:'fadeIn 0.2s ease'}}>
+          <div style={{width:14,height:14,border:'2px solid rgba(123,201,6,0.2)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
           <div>
             <div style={{fontSize:12,fontWeight:700,color:'#ffffff'}}>{loadingState==='searching'?'searching current sources...':'synthesizing intelligence...'}</div>
-            <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:10,color:'rgba(123,201,6,0.5)',marginTop:1}}>{loadingState==='searching'?'tavily retrieving real-time results':'claude synthesizing findings'}</div>
+            <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:10,color:'rgba(123,201,6,0.5)',marginTop:1}}>{loadingState==='searching'?'tavily retrieving results':'claude synthesizing'}</div>
           </div>
           <div style={{marginLeft:'auto',display:'flex',gap:4}}>
             {[0,1,2].map(i => <div key={i} style={{width:5,height:5,borderRadius:'50%',background:'#7BC906',animation:`pulse 1.4s ease-in-out ${i*0.2}s infinite`}}/>)}
@@ -175,196 +214,93 @@ export default function Dashboard() {
       )}
 
       {/* NAV */}
-      <nav style={{
-        position:'sticky',top:0,zIndex:50,
-        background:'#000000',
-        borderBottom:'0.5px solid rgba(255,255,255,0.08)',
-        height:56,
-        display:'flex',alignItems:'center',justifyContent:'space-between',
-        padding:'0 40px',
-      }}>
-        <img src={LOGO} style={{height:36,width:'auto',display:'block'}} alt="studio 2.5"/>
-        <div style={{display:'flex',gap:8}}>
-          {(['query','briefing'] as Mode[]).map(m => (
-            <button key={m} onClick={() => { setMode(m); setResult(null); setQuestion('') }}
-              className={`nav-pill${mode===m?' active':''}`}
-              style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.45)',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:12,fontWeight:700,padding:'7px 22px',borderRadius:999}}>
-              {m==='query'?'strategic q&a':'signals briefings'}
-            </button>
-          ))}
-        </div>
-        <div style={{display:'flex',alignItems:'center',gap:16}}>
-          <a href="https://studio25.xyz" style={{display:'flex',alignItems:'center',gap:6,color:'#7BC906',fontSize:12,fontWeight:700,textDecoration:'none',letterSpacing:'0.03em'}}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M15 12H9M12 9l-3 3 3 3"/></svg>
-            studio 2.5.xyz
-          </a>
-          <UserButton afterSignOutUrl="/"/>
+      <nav style={{position:'sticky',top:0,zIndex:50,background:'#000000',borderBottom:'0.5px solid rgba(255,255,255,0.08)',height:56,display:'flex',alignItems:'center'}}>
+        <div className="nav-inner" style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 40px'}}>
+          <img className="nav-logo" src={LOGO} style={{height:36,width:'auto',display:'block',flexShrink:0}} alt="studio 2.5"/>
+          <div className="nav-pills" style={{display:'flex',gap:8}}>
+            {(['query','briefing'] as Mode[]).map(m => (
+              <button key={m} onClick={() => { setMode(m); setResult(null); setQuestion('') }}
+                className={`nav-pill${mode===m?' active':''}`}
+                style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.45)',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:12,fontWeight:700,padding:'7px 22px',borderRadius:999,whiteSpace:'nowrap'}}>
+                {m==='query'?'strategic q&a':'signals briefings'}
+              </button>
+            ))}
+          </div>
+          <div className="nav-right" style={{display:'flex',alignItems:'center',gap:16,flexShrink:0}}>
+            <a className="nav-studio-link" href="https://studio25.xyz" style={{display:'flex',alignItems:'center',gap:6,color:'#7BC906',fontSize:12,fontWeight:700,textDecoration:'none',letterSpacing:'0.03em',whiteSpace:'nowrap'}}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M15 12H9M12 9l-3 3 3 3"/></svg>
+              studio 2.5.xyz
+            </a>
+            <UserButton afterSignOutUrl="/"/>
+          </div>
         </div>
       </nav>
 
-      {/* HERO — 500px to match banner natural height, center center shows full grass */}
-      <div style={{
-        position:'sticky',top:56,zIndex:30,
-        height:500,
-        overflow:'hidden',
-        background:'#000000',
-      }}>
-        <div style={{
-          position:'absolute',inset:0,
-          backgroundImage:`url(${BANNER})`,
-          backgroundSize:'cover',
-          backgroundPosition:'center center',
-          filter:'brightness(0.72) saturate(1.1)',
-        }}/>
+      {/* HERO */}
+      <div className="hero-inner" style={{position:'sticky',top:56,zIndex:30,height:500,overflow:'hidden',background:'#000000'}}>
+        <div style={{position:'absolute',inset:0,backgroundImage:`url(${BANNER})`,backgroundSize:'cover',backgroundPosition:'center center',filter:'brightness(0.72) saturate(1.1)'}}/>
         <div style={{position:'absolute',bottom:0,left:0,right:0,height:200,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
-        <div style={{position:'absolute',top:0,left:0,bottom:0,width:'60%',background:'linear-gradient(to right,rgba(0,0,0,0.6),transparent)',pointerEvents:'none'}}/>
+        <div style={{position:'absolute',top:0,left:0,bottom:0,width:'65%',background:'linear-gradient(to right,rgba(0,0,0,0.65),transparent)',pointerEvents:'none'}}/>
 
-        {/* Left: label + MASSIVE headline */}
-        <div style={{position:'absolute',bottom:60,left:48,right:'40%'}}>
-          {/* Subline — no italics, small but readable */}
-          <div style={{
-            fontFamily:"'Plus Jakarta Sans',sans-serif",
-            fontSize:14,
-            fontWeight:500,
-            color:'rgba(255,255,255,0.7)',
-            marginBottom:12,
-            letterSpacing:'0.04em',
-            textTransform:'lowercase',
-          }}>
+        {/* Left content */}
+        <div className="hero-left" style={{position:'absolute',bottom:60,left:48,right:'38%'}}>
+          <div className="hero-label" style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:14,fontWeight:500,color:'rgba(255,255,255,0.7)',marginBottom:12,letterSpacing:'0.04em'}}>
             a new type of design company.
           </div>
-          {/* LOGO */}
-          <img src={LOGO} style={{height:36,width:'auto',display:'block',marginBottom:20,opacity:0.9}} alt="studio 2.5"/>
-          {/* MASSIVE HEADLINE — clamp from 72px to 120px, fills the red outline */}
-          <div style={{
-            fontFamily:"'Plus Jakarta Sans',sans-serif",
-            fontSize:'clamp(72px, 9vw, 120px)',
-            fontWeight:800,
-            lineHeight:0.92,
-            color:'#ffffff',
-            letterSpacing:'-0.03em',
-            textShadow:'0 2px 20px rgba(0,0,0,0.5)',
-          }}>
+          <img className="hero-logo" src={LOGO} style={{height:36,width:'auto',display:'block',marginBottom:14,opacity:0.9}} alt="studio 2.5"/>
+          <div className="hero-headline" style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:'clamp(72px, 9vw, 120px)',fontWeight:800,lineHeight:0.92,color:'#ffffff',letterSpacing:'-0.03em',textShadow:'0 2px 20px rgba(0,0,0,0.5)'}}>
             how to<br/>
             <span style={{color:'#7BC906'}}>grow 3d.</span>
           </div>
         </div>
 
-        {/* Right: CTA card */}
-        <div style={{
-          position:'absolute',
-          right:48,
-          top:40,
-          background:'rgba(0,0,0,0.88)',
-          borderRadius:20,
-          padding:'24px 24px 20px',
-          width:288,
-          display:'flex',flexDirection:'column',gap:16,
-          backdropFilter:'blur(20px)',
-          border:'1px solid rgba(255,255,255,0.14)',
-        }}>
-          <a
-            href={CALENDLY}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="arrow-btn"
-            style={{
-              width:52,height:52,
-              borderRadius:12,
-              border:'2px solid #7BC906',
-              background:'rgba(123,201,6,0.08)',
-              display:'flex',alignItems:'center',justifyContent:'center',
-              textDecoration:'none',
-              transition:'all 0.15s',
-              animation:'glow 2.5s ease-in-out infinite',
-              flexShrink:0,
-            }}
-          >
+        {/* Desktop CTA card — hidden on mobile */}
+        <div className="hero-cta-card" style={{position:'absolute',right:48,top:40,background:'rgba(0,0,0,0.88)',borderRadius:20,padding:'24px 24px 20px',width:288,display:'flex',flexDirection:'column',gap:16,backdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,0.14)'}}>
+          <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="arrow-btn"
+            style={{width:52,height:52,borderRadius:12,border:'2px solid #7BC906',background:'rgba(123,201,6,0.08)',display:'flex',alignItems:'center',justifyContent:'center',textDecoration:'none',transition:'all 0.15s',animation:'glow 2.5s ease-in-out infinite',flexShrink:0}}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7BC906" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
           <p style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.75)',lineHeight:1.65,margin:0}}>
             connect with the studio to find out how to turn these insights into actionable innovation outcomes.
           </p>
-          <a
-            href={CALENDLY}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="cta-book"
-            style={{
-              display:'block',
-              background:'#7BC906',
-              color:'#121f04',
-              fontFamily:"'Plus Jakarta Sans',sans-serif",
-              fontSize:13,fontWeight:800,
-              padding:'12px 16px',
-              borderRadius:10,
-              textDecoration:'none',
-              textAlign:'center' as const,
-              letterSpacing:'0.03em',
-              transition:'all 0.15s',
-            }}
-          >
+          <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="cta-book"
+            style={{display:'block',background:'#7BC906',color:'#121f04',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,fontWeight:800,padding:'12px 16px',borderRadius:10,textDecoration:'none',textAlign:'center' as const,letterSpacing:'0.03em',transition:'all 0.15s'}}>
+            book a free conversation →
+          </a>
+        </div>
+
+        {/* Mobile CTA — shown only on mobile, sits below headline in flow */}
+        <div className="hero-mobile-cta" style={{display:'none',position:'absolute',bottom:16,left:16,right:16}}>
+          <a href={CALENDLY} target="_blank" rel="noopener noreferrer"
+            style={{display:'block',width:'100%',background:'#7BC906',color:'#121f04',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:14,fontWeight:800,padding:'14px 20px',borderRadius:12,textDecoration:'none',textAlign:'center' as const,letterSpacing:'0.03em'}}>
             book a free conversation →
           </a>
         </div>
       </div>
 
       {/* SCROLL CONTENT */}
-      <div style={{position:'relative',zIndex:50,background:'#000000',minHeight:'100vh',padding:'48px 0 80px'}}>
-        <div style={{maxWidth:1100,margin:'0 auto',padding:'0 48px'}}>
+      <div style={{position:'relative',zIndex:50,background:'#000000',minHeight:'100vh',padding:'40px 0 80px'}}>
+        <div className="content-inner" style={{maxWidth:1100,margin:'0 auto',padding:'0 48px'}}>
 
           {mode==='query' && !result && (
             <>
-              <div style={{
-                background:'rgba(12,22,4,0.97)',
-                border:'1.5px solid #7BC906',
-                borderRadius:14,
-                padding:'24px 28px 20px',
-                marginBottom:28,
-                boxShadow:'0 4px 40px rgba(0,0,0,0.5)',
-              }}>
+              <div className="question-box" style={{background:'rgba(12,22,4,0.97)',border:'1.5px solid #7BC906',borderRadius:14,padding:'24px 28px 20px',marginBottom:24,boxShadow:'0 4px 40px rgba(0,0,0,0.5)'}}>
                 <textarea
+                  className="question-textarea"
                   value={question}
                   onChange={e => setQuestion(e.target.value)}
                   onKeyDown={e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitQuery()} }}
                   placeholder="ask a question about world models and AI transformation."
                   disabled={isLoading}
                   rows={3}
-                  style={{
-                    width:'100%',
-                    background:'transparent',border:'none',outline:'none',
-                    color:'rgba(255,255,255,0.9)',
-                    caretColor:'#7BC906',
-                    fontFamily:"'Plus Jakarta Sans',sans-serif",
-                    fontSize:17,lineHeight:1.7,
-                    resize:'none',
-                    marginBottom:16,
-                    display:'block',
-                  }}
+                  style={{width:'100%',background:'transparent',border:'none',outline:'none',color:'rgba(255,255,255,0.9)',caretColor:'#7BC906',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:17,lineHeight:1.7,resize:'none',marginBottom:16,display:'block'}}
                 />
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                  <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.35)',letterSpacing:'0.05em'}}>
+                <div className="research-row" style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:12}}>
+                  <span className="research-hint" style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.35)',letterSpacing:'0.05em'}}>
                     enter to research · shift+enter for new line
                   </span>
-                  <button
-                    onClick={() => submitQuery()}
-                    disabled={isLoading||!question.trim()}
-                    className="research-btn"
-                    style={{
-                      background:'#7BC906',
-                      border:'none',
-                      color:'#121f04',
-                      fontFamily:"'Plus Jakarta Sans',sans-serif",
-                      fontSize:14,fontWeight:800,
-                      padding:'12px 44px',
-                      borderRadius:10,
-                      display:'flex',alignItems:'center',gap:8,
-                      opacity:(!question.trim()||isLoading)?0.35:1,
-                      transition:'all 0.15s',
-                      letterSpacing:'0.04em',
-                      cursor:'pointer',
-                    }}
-                  >
+                  <button onClick={() => submitQuery()} disabled={isLoading||!question.trim()} className="research-btn"
+                    style={{background:'#7BC906',border:'none',color:'#121f04',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:14,fontWeight:800,padding:'12px 44px',borderRadius:10,display:'flex',alignItems:'center',gap:8,opacity:(!question.trim()||isLoading)?0.35:1,transition:'all 0.15s',letterSpacing:'0.04em',cursor:'pointer',flexShrink:0}}>
                     research
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </button>
@@ -375,21 +311,7 @@ export default function Dashboard() {
               <div style={{display:'flex',flexDirection:'column',gap:6}}>
                 {SUGGESTED_QUESTIONS.map((q,i) => (
                   <button key={i} onClick={() => submitQuery(q)} className="q-card"
-                    style={{
-                      textAlign:'left',
-                      background:'rgba(255,255,255,0.03)',
-                      border:'0.5px solid rgba(255,255,255,0.09)',
-                      borderRadius:10,
-                      padding:'14px 22px',
-                      cursor:'pointer',
-                      fontFamily:"'Plus Jakarta Sans',sans-serif",
-                      fontSize:14,fontWeight:400,
-                      color:'rgba(255,255,255,0.65)',
-                      lineHeight:1.55,
-                      transition:'all 0.15s',
-                      width:'100%',
-                    }}
-                  >
+                    style={{textAlign:'left',background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.09)',borderRadius:10,padding:'14px 22px',cursor:'pointer',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:14,fontWeight:400,color:'rgba(255,255,255,0.65)',lineHeight:1.55,transition:'all 0.15s',width:'100%'}}>
                     {q}
                   </button>
                 ))}
@@ -403,15 +325,15 @@ export default function Dashboard() {
               <div style={{display:'flex',flexDirection:'column',gap:6}}>
                 {SIGNAL_TOPICS.map(topic => (
                   <button key={topic.id} onClick={() => submitBriefing(topic.id)} disabled={isLoading} className="topic-card"
-                    style={{display:'flex',alignItems:'center',gap:16,background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.09)',borderRadius:10,padding:'15px 22px',cursor:'pointer',textAlign:'left',width:'100%',transition:'all 0.15s',opacity:isLoading?0.5:1,color:'#ffffff'}}>
+                    style={{display:'flex',alignItems:'center',gap:14,background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.09)',borderRadius:10,padding:'15px 22px',cursor:'pointer',textAlign:'left',width:'100%',transition:'all 0.15s',opacity:isLoading?0.5:1,color:'#ffffff'}}>
                     <span style={{fontSize:20,flexShrink:0}}>{topic.icon}</span>
-                    <div style={{flex:1}}>
-                      <div style={{fontSize:14,fontWeight:600,color:'rgba(255,255,255,0.85)',marginBottom:3,fontFamily:"'Plus Jakarta Sans',sans-serif"}}>{topic.label}</div>
-                      <div style={{fontSize:12,color:'rgba(255,255,255,0.35)',fontFamily:"'Hedvig Letters Serif',serif",lineHeight:1.5}}>{topic.description}</div>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div className="topic-label" style={{fontSize:14,fontWeight:600,color:'rgba(255,255,255,0.85)',marginBottom:2,fontFamily:"'Plus Jakarta Sans',sans-serif"}}>{topic.label}</div>
+                      <div style={{fontSize:11,color:'rgba(255,255,255,0.35)',fontFamily:"'Hedvig Letters Serif',serif",lineHeight:1.45}}>{topic.description}</div>
                     </div>
                     {activeTopic===topic.id&&isLoading
                       ? <div style={{width:13,height:13,border:'2px solid rgba(255,255,255,0.15)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
-                      : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7BC906" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7BC906" strokeWidth="2" style={{flexShrink:0}}><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     }
                   </button>
                 ))}
@@ -422,20 +344,20 @@ export default function Dashboard() {
           {error && (
             <div style={{background:'rgba(185,28,28,0.1)',border:'0.5px solid rgba(185,28,28,0.35)',borderRadius:10,padding:'12px 18px',fontSize:13,color:'#fca5a5',display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
               {error}
-              <button onClick={()=>setError('')} style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontWeight:700,fontSize:12}}>dismiss</button>
+              <button onClick={()=>setError('')} style={{background:'none',border:'none',color:'#fca5a5',cursor:'pointer',fontWeight:700,fontSize:12,flexShrink:0,marginLeft:12}}>dismiss</button>
             </div>
           )}
 
           {result && !isLoading && (
             <div style={{animation:'fadeIn 0.3s ease'}}>
-              <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(123,201,6,0.2)',borderRadius:14,padding:'20px 28px',marginBottom:8,display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:20}}>
-                <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
+              <div className="result-header" style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(123,201,6,0.2)',borderRadius:14,padding:'20px 28px',marginBottom:8,display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:16}}>
+                <div className="result-q-text" style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
                   {result.question||result.topic}
                 </div>
-                <img src={LOGO} style={{height:28,width:'auto',flexShrink:0,marginTop:2,opacity:0.4}} alt="studio 2.5"/>
+                <img src={LOGO} style={{height:24,width:'auto',flexShrink:0,marginTop:2,opacity:0.4}} alt="studio 2.5"/>
               </div>
 
-              <div style={{background:'#ffffff',borderRadius:14,padding:'28px 36px',marginBottom:8}}>
+              <div className="result-body" style={{background:'#ffffff',borderRadius:14,padding:'28px 32px',marginBottom:8}}>
                 <div dangerouslySetInnerHTML={{__html:renderMarkdown(bodyText)}}/>
               </div>
 
@@ -444,41 +366,29 @@ export default function Dashboard() {
                   <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.22)',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
                     sources · {result.sources.length} retrieved
                   </div>
-                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
+                  <div className="sources-grid" style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
                     {result.sources.map((s,i) => <SourceCard key={i} source={s}/>)}
                   </div>
                 </div>
               )}
 
-              <div style={{display:'flex',border:'1px solid rgba(123,201,6,0.2)',borderRadius:14,overflow:'hidden',marginBottom:16}}>
-                <div style={{flex:1,background:'rgba(12,22,4,0.5)',padding:'22px 28px'}}>
+              <div className="calendly-cta" style={{display:'flex',border:'1px solid rgba(123,201,6,0.2)',borderRadius:14,overflow:'hidden',marginBottom:16}}>
+                <div style={{flex:1,background:'rgba(12,22,4,0.5)',padding:'22px 24px'}}>
                   <div style={{fontSize:10,fontWeight:700,color:'#7BC906',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:8}}>from insight to outcome</div>
-                  <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:17,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.25}}>ready to turn this into a deliverable?</div>
-                  <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.45)',lineHeight:1.7}}>
+                  <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.25}}>ready to turn this into a deliverable?</div>
+                  <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.45)',lineHeight:1.65}}>
                     studio 2.5 converts intelligence into scoped advisory outcomes, research reports, business cases, gap analyses, and transformation roadmaps, in 1 to 2 weeks.
                   </div>
                 </div>
-                <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="cta-book"
-                  style={{flexShrink:0,width:240,background:'#7BC906',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:15,fontWeight:800,color:'#121f04',textDecoration:'none',textAlign:'center' as const,padding:'0 20px',lineHeight:1.3,transition:'all 0.15s'}}>
+                <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="cta-book calendly-cta-btn"
+                  style={{flexShrink:0,width:220,background:'#7BC906',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:15,fontWeight:800,color:'#121f04',textDecoration:'none',textAlign:'center' as const,padding:'0 20px',lineHeight:1.3,transition:'all 0.15s'}}>
                   book a free conversation
                 </a>
               </div>
 
               <button
                 onClick={() => { setResult(null); setQuestion('') }}
-                style={{
-                  fontSize:11,
-                  fontWeight:600,
-                  color:'rgba(255,255,255,0.28)',
-                  background:'transparent',
-                  border:'0.5px solid rgba(255,255,255,0.08)',
-                  borderRadius:999,
-                  padding:'7px 18px',
-                  cursor:'pointer',
-                  fontFamily:"'Plus Jakarta Sans',sans-serif",
-                  transition:'all 0.15s',
-                }}
-              >
+                style={{fontSize:11,fontWeight:600,color:'rgba(255,255,255,0.28)',background:'transparent',border:'0.5px solid rgba(255,255,255,0.08)',borderRadius:999,padding:'7px 18px',cursor:'pointer',fontFamily:"'Plus Jakarta Sans',sans-serif",transition:'all 0.15s'}}>
                 ← new {mode==='query'?'question':'briefing'}
               </button>
             </div>
@@ -486,8 +396,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div style={{background:'#000000',borderTop:'0.5px solid rgba(255,255,255,0.06)',padding:'20px 40px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-        <img src={LOGO} style={{height:28,width:'auto',opacity:0.28}} alt="studio 2.5"/>
+      <div className="footer-inner" style={{background:'#000000',borderTop:'0.5px solid rgba(255,255,255,0.06)',padding:'20px 40px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <img src={LOGO} style={{height:26,width:'auto',opacity:0.28}} alt="studio 2.5"/>
         <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(255,255,255,0.14)'}}>© 2026 studio 2.5 · advisor.studio25.xyz</span>
         <a href="https://studio25.xyz" style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.3)',textDecoration:'none'}}>studio25.xyz →</a>
       </div>
