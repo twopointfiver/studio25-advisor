@@ -5,6 +5,7 @@ import { SIGNAL_TOPICS, SUGGESTED_QUESTIONS } from '@/lib/config'
 
 const CALENDLY = 'https://calendly.com/jeffrey-l-walter-studio25/jeff-walter-studio-2-5-connect?primary_color=6f9f25'
 const LOGO = '/studio25-logo.png'
+const BANNER = '/studio25-banner.jpg'
 
 type Mode = 'query' | 'briefing'
 type LoadingState = 'idle' | 'searching' | 'synthesizing' | 'done'
@@ -63,13 +64,11 @@ function renderMarkdown(text: string): string {
 function SourceCard({ source }: { source: Source }) {
   let domain = ''
   try { domain = new URL(source.url).hostname.replace('www.', '') } catch {}
-  const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=32`
   return (
     <a href={source.url} target="_blank" rel="noopener noreferrer"
       style={{display:'flex',alignItems:'flex-start',gap:10,padding:'12px 16px',background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(255,255,255,0.1)',borderRadius:8,textDecoration:'none',transition:'all 0.15s'}}
       onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(123,201,6,0.4)'; el.style.background='rgba(255,255,255,0.07)' }}
       onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.borderColor='rgba(255,255,255,0.1)'; el.style.background='rgba(255,255,255,0.04)' }}>
-      <img src={faviconUrl} alt={domain} width={14} height={14} style={{marginTop:3,flexShrink:0,borderRadius:2,opacity:0.7}} onError={e => { (e.target as HTMLImageElement).style.display='none' }} />
       <div style={{flex:1,minWidth:0}}>
         <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:10,color:'rgba(123,201,6,0.6)',letterSpacing:'0.03em',marginBottom:2}}>{domain}</div>
         <div style={{fontSize:12,fontWeight:600,color:'rgba(255,255,255,0.8)',lineHeight:1.4}}>{source.title}</div>
@@ -136,7 +135,7 @@ export default function Dashboard() {
     <div style={{minHeight:'100vh',background:'#000000',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
-        * { box-sizing: border-box; }
+        *, *::before, *::after { box-sizing: border-box; }
         .md-h1{font-size:1.15rem;font-weight:700;color:#121f04;margin:1.3rem 0 0.4rem}
         .md-h2{font-size:1rem;font-weight:700;color:#121f04;margin:1.1rem 0 0.3rem;border-bottom:1px solid rgba(68,107,26,0.15);padding-bottom:4px}
         .md-h3{font-size:0.875rem;font-weight:700;color:#446b1a;margin:0.9rem 0 0.25rem}
@@ -148,13 +147,18 @@ export default function Dashboard() {
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
         @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        .q-card:hover{background:rgba(255,255,255,0.08)!important;border-color:rgba(123,201,6,0.4)!important}
+        .q-card:hover{background:rgba(255,255,255,0.08)!important;border-color:rgba(123,201,6,0.35)!important}
         .topic-card:hover{background:rgba(255,255,255,0.06)!important;border-color:rgba(123,201,6,0.3)!important}
-        .nav-pill{transition:all 0.15s;cursor:pointer}
-        .nav-pill:hover{background:rgba(255,255,255,0.08)!important}
+        .nav-pill{transition:all 0.15s;cursor:pointer;appearance:none;-webkit-appearance:none}
+        .nav-pill:hover{background:rgba(255,255,255,0.1)!important}
         .nav-pill.active{background:#ffffff!important;color:#000000!important;border-color:#ffffff!important}
-        .research-btn:hover:not(:disabled){background:rgba(255,255,255,0.1)!important}
+        .research-btn{appearance:none;-webkit-appearance:none;cursor:pointer}
+        .research-btn:hover:not([disabled]){background:rgba(123,201,6,0.15)!important;border-color:#7BC906!important;color:#7BC906!important}
+        .research-btn:focus{outline:none}
+        .research-btn:active{outline:none}
         .cta-book:hover{background:#8bda07!important}
+        button{-webkit-appearance:none;appearance:none}
+        button:focus{outline:none}
       `}</style>
 
       {/* LOADING BANNER */}
@@ -212,57 +216,53 @@ export default function Dashboard() {
         </div>
       </nav>
 
-      {/* HERO — sticky, taller, image shifted down to show full grass */}
+      {/* HERO — sticky, 400px, banner shifted to show full grass crown */}
       <div style={{
         position:'sticky',top:52,zIndex:30,
-        height:380,
+        height:400,
         overflow:'hidden',
         background:'#000000',
       }}>
-        {/* BG — backgroundPosition center 60% pulls the image down to show more grass */}
         <div style={{
           position:'absolute',inset:0,
-          backgroundImage:'url(/studio25-banner.jpg)',
+          backgroundImage:`url(${BANNER})`,
           backgroundSize:'cover',
-          backgroundPosition:'center 60%',
+          backgroundPosition:'center 55%',
           filter:'brightness(0.78) saturate(1.1)',
         }}/>
-        {/* Fade to black at bottom */}
-        <div style={{position:'absolute',bottom:0,left:0,right:0,height:140,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
-        {/* Subtle left fade for text legibility */}
-        <div style={{position:'absolute',inset:0,background:'linear-gradient(to right, rgba(0,0,0,0.35) 0%, transparent 55%)',pointerEvents:'none'}}/>
+        <div style={{position:'absolute',bottom:0,left:0,right:0,height:160,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
+        <div style={{position:'absolute',inset:0,background:'linear-gradient(to right,rgba(0,0,0,0.25) 0%,transparent 50%)',pointerEvents:'none'}}/>
 
         {/* Left: label + large wordmark */}
-        <div style={{position:'absolute',bottom:52,left:44}}>
+        <div style={{position:'absolute',bottom:56,left:44}}>
           <div style={{
             fontFamily:"'Hedvig Letters Serif',serif",
             fontStyle:'italic',
             fontSize:17,
             color:'rgba(255,255,255,0.85)',
-            marginBottom:16,
-            letterSpacing:'0.01em',
+            marginBottom:18,
           }}>
             a new type of design company.
           </div>
-          {/* Large wordmark — 110px height */}
-          <img src={LOGO} style={{height:110,display:'block'}} alt="studio 2.5"/>
+          {/* 130px — properly large */}
+          <img src={LOGO} style={{height:130,display:'block'}} alt="studio 2.5"/>
         </div>
 
         {/* Right: CTA card */}
         <div style={{
           position:'absolute',right:44,top:'50%',transform:'translateY(-50%)',
-          background:'rgba(0,0,0,0.85)',
+          background:'rgba(0,0,0,0.88)',
           borderRadius:18,
           padding:'22px 24px',
-          width:272,
+          width:280,
           display:'flex',flexDirection:'column',gap:14,
           backdropFilter:'blur(16px)',
-          border:'0.5px solid rgba(255,255,255,0.12)',
+          border:'0.5px solid rgba(255,255,255,0.14)',
         }}>
           <button
             onClick={() => { setMode('query'); setResult(null) }}
             style={{
-              width:50,height:50,
+              width:52,height:52,
               borderRadius:12,
               border:'2px solid #ffffff',
               background:'transparent',
@@ -270,11 +270,12 @@ export default function Dashboard() {
               cursor:'pointer',
               transition:'background 0.15s',
               flexShrink:0,
+              color:'#ffffff',
             }}
             onMouseEnter={e => (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.1)'}
             onMouseLeave={e => (e.currentTarget as HTMLElement).style.background='transparent'}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M5 12h14M12 5l7 7-7 7"/>
             </svg>
           </button>
@@ -296,14 +297,12 @@ export default function Dashboard() {
           {/* QUERY MODE */}
           {mode==='query' && !result && (
             <>
-              {/* Input block — high contrast, Plus Jakarta Sans */}
               <div style={{
-                background:'rgba(255,255,255,0.07)',
-                border:'1px solid rgba(255,255,255,0.2)',
+                background:'rgba(255,255,255,0.06)',
+                border:'1px solid rgba(255,255,255,0.18)',
                 borderRadius:16,
                 padding:'28px 32px 24px',
                 marginBottom:32,
-                boxShadow:'0 0 0 1px rgba(123,201,6,0.08), 0 8px 32px rgba(0,0,0,0.4)',
               }}>
                 <textarea
                   value={question}
@@ -315,12 +314,12 @@ export default function Dashboard() {
                   style={{
                     width:'100%',
                     background:'transparent',border:'none',outline:'none',
-                    color:'rgba(255,255,255,0.92)',
+                    color:'rgba(255,255,255,0.9)',
                     fontFamily:"'Plus Jakarta Sans',sans-serif",
                     fontSize:17,lineHeight:1.7,
                     resize:'none',
                     marginBottom:20,
-                    boxSizing:'border-box' as const,
+                    display:'block',
                   }}
                 />
                 <div style={{display:'flex',justifyContent:'flex-end'}}>
@@ -330,13 +329,12 @@ export default function Dashboard() {
                     className="research-btn"
                     style={{
                       background:'transparent',
-                      border:'1.5px solid rgba(255,255,255,0.7)',
+                      border:'1.5px solid rgba(255,255,255,0.55)',
                       color:'#ffffff',
                       fontFamily:"'Plus Jakarta Sans',sans-serif",
                       fontSize:14,fontWeight:800,
-                      padding:'12px 36px',
+                      padding:'12px 40px',
                       borderRadius:10,
-                      cursor:'pointer',
                       display:'flex',alignItems:'center',gap:10,
                       opacity:(!question.trim()||isLoading)?0.3:1,
                       transition:'all 0.15s',
@@ -351,7 +349,6 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              {/* Suggested questions */}
               <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.3)',letterSpacing:'0.12em',textTransform:'lowercase',marginBottom:14}}>
                 suggested questions
               </div>
@@ -405,6 +402,7 @@ export default function Dashboard() {
                       cursor:'pointer',textAlign:'left',width:'100%',
                       transition:'all 0.15s',
                       opacity:isLoading?0.5:1,
+                      color:'#ffffff',
                     }}
                   >
                     <span style={{fontSize:20,flexShrink:0}}>{topic.icon}</span>
@@ -433,8 +431,6 @@ export default function Dashboard() {
           {/* RESULT */}
           {result && !isLoading && (
             <div style={{animation:'fadeIn 0.3s ease'}}>
-
-              {/* Question header */}
               <div style={{
                 background:'rgba(255,255,255,0.05)',
                 border:'0.5px solid rgba(255,255,255,0.12)',
@@ -449,17 +445,10 @@ export default function Dashboard() {
                 <img src={LOGO} style={{height:20,flexShrink:0,marginTop:3,opacity:0.5}} alt="studio 2.5"/>
               </div>
 
-              {/* Answer */}
-              <div style={{
-                background:'#ffffff',
-                borderRadius:14,
-                padding:'28px 32px',
-                marginBottom:8,
-              }}>
+              <div style={{background:'#ffffff',borderRadius:14,padding:'28px 32px',marginBottom:8}}>
                 <div dangerouslySetInnerHTML={{__html:renderMarkdown(bodyText)}}/>
               </div>
 
-              {/* Sources */}
               {result.sources && result.sources.length > 0 && (
                 <div style={{background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.08)',borderRadius:14,padding:'18px 22px',marginBottom:8}}>
                   <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.3)',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
@@ -471,7 +460,7 @@ export default function Dashboard() {
                 </div>
               )}
 
-              {/* Calendly CTA */}
+              {/* Calendly CTA — green button, wide */}
               <div style={{
                 display:'flex',
                 border:'0.5px solid rgba(255,255,255,0.1)',
@@ -494,12 +483,14 @@ export default function Dashboard() {
                   rel="noopener noreferrer"
                   className="cta-book"
                   style={{
-                    flexShrink:0,width:220,
+                    flexShrink:0,
+                    width:240,
                     background:'#7BC906',
                     display:'flex',alignItems:'center',justifyContent:'center',
                     fontFamily:"'Plus Jakarta Sans',sans-serif",
                     fontSize:15,fontWeight:800,
-                    color:'#121f04',textDecoration:'none',
+                    color:'#121f04',
+                    textDecoration:'none',
                     textAlign:'center' as const,
                     padding:'0 24px',
                     lineHeight:1.3,
@@ -510,7 +501,6 @@ export default function Dashboard() {
                 </a>
               </div>
 
-              {/* New question */}
               <button
                 onClick={() => { setResult(null); setQuestion('') }}
                 style={{
@@ -521,6 +511,7 @@ export default function Dashboard() {
                   cursor:'pointer',
                   fontFamily:"'Plus Jakarta Sans',sans-serif",
                   transition:'all 0.15s',
+                  color:'rgba(255,255,255,0.35)',
                 }}
               >
                 ← new {mode==='query'?'question':'briefing'}
