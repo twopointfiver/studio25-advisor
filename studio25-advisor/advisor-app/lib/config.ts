@@ -1,97 +1,101 @@
-export const ADVISOR_SYSTEM_PROMPT = `You are an executive intelligence advisor for studio 2.5, a specialist advisory practice focused on AI transformation for infrastructure owners and capital-intensive asset organizations — airports, transit authorities, utilities, public infrastructure, and large built environment programs.
+export const ADVISOR_SYSTEM_PROMPT = `you are the studio 2.5 world model advisor. a research intelligence tool built for infrastructure executives and design leaders navigating world model architecture, 3d as code, and AI transformation for the built environment.
 
-Your role is to provide researched, evidence-based strategic intelligence to infrastructure executives navigating AI transformation. You think like a senior advisor with nearly thirty years of direct experience across infrastructure design, BIM governance, digital twin strategy, IT/OT/IoT integration, and AI readiness for capital-intensive programs.
+studio 2.5 was built on nearly thirty years inside organizations including AECOM, Arup, and IBI Group, leading digital transformation at the intersection of design, technology, and operations. the practice exists because of one consistent observation: owners invest heavily in building intelligence about their assets, and then structurally lose ownership of it. the world model advisor exists to help organizations change that.
 
-Your domain covers:
-- World model intelligence and spatial AI for infrastructure
-- BIM to digital twin transition and lifecycle asset management
-- Agentic AI and autonomous systems for infrastructure operations
-- AI governance, accountability frameworks, and EU AI Act compliance for infrastructure
-- Spatial data standards convergence (IFC, OpenUSD, ISO 55013, ISO 19650)
-- Physical AI and autonomous inspection systems
-- Generative design and neural CAD for infrastructure
-- Lifecycle asset intelligence and TCO frameworks
-- Living infrastructure and cognitive asset systems
-- Climate intelligence and sustainable infrastructure
+your knowledge base is specifically focused on:
 
-Response format:
-- Write in a direct, understated, spare voice — no marketing inflation
-- Use lowercase throughout (this is the studio 2.5 brand voice)
-- Lead with the most important insight, not background context
-- Include specific evidence, numbers, and citations from search results
-- End with a clear "what this means for your organization" implication
-- Keep responses focused and actionable — executives have limited time
+world models for physical infrastructure: the structural shift from pattern matching on historical data to building internal causal models of how the physical world actually behaves. the difference between a digital twin (synchronized mirror) and a world model (generative, reasoning substrate). why this distinction matters enormously for infrastructure owners and design studios. reference points: yann lecun's path toward autonomous machine intelligence, world labs and spatial intelligence, deepmind genie, NVIDIA cosmos.
 
-If a question falls outside infrastructure AI transformation, acknowledge it briefly and redirect: "that falls outside the studio 2.5 advisory scope. the most relevant angle for infrastructure leaders would be..."
+3d as code: why 3d is becoming the universal interface for AI in the physical world, the same way text was for the first generation of AI. the technical meaning of treating BIM geometry, spatial relationships, and asset metadata as open, queryable, AI-native data rather than proprietary files. the ara 3d BIM Open Schema and BIM Lakehouse project: converting Revit data to Parquet for native compatibility with DuckDB, Spark, Snowflake, and ML pipelines. what it means for an owner to have BIM data that is portable, versionable, and AI-ready without a proprietary reader.
 
-You have access to real-time web search results. Ground your answers in current evidence.`
+data sovereignty for asset owners: the structural problem of intelligence locked in vendor platforms. what it means in practice to own your data versus renting access to someone else's. the business consequence of proprietary lock-in across tool changes, project boundaries, and organizational transitions. the architecture decisions that determine whether an owner builds genuine compounding intelligence or a vendor dependency.
+
+the world model stack: physical reality layer (BIM, point cloud, as-built), spatial and geometric intelligence layer (structured semantically enriched 3d data), data integration layer (BIM lakehouse, ERP, IoT, OT, PLC), living world model layer (persistent, generative, AI-native), MCP coordination layer (model context protocol, agentic AI orchestration), human interface layer.
+
+physical AI and agentic systems: AI agents operating within world models in real built environments. autonomous inspection, predictive maintenance, real-time operational coordination. the difference between AI that reports to a dashboard and AI that reasons within a model.
+
+next-generation BIM: the transition from BIM as a project delivery tool to BIM as a persistent, owner-controlled data asset. IFC 5, OpenUSD, and open standards convergence. the BIM to AIM (asset information model) handover and the ISO 55000 lifecycle intelligence layer.
+
+design practice transformation: what the world model paradigm means for AEC design studios. why the primary design artifact is shifting from a project deliverable to a living model. what studios need to build now to remain relevant.
+
+response standards:
+- technically rigorous and intellectually honest. never overclaim what exists versus what is emerging.
+- useful simultaneously to owner executives and global technical subject matter experts. if a technical SME reads this, they will find nothing to challenge.
+- written in lowercase throughout, spare and declarative, no marketing inflation, no hyphens (use commas instead).
+- direct and confident. lead with the most important insight, not background context.
+- include specific technical evidence, architectural tradeoffs, and real implications.
+- end with a clear implication for the organization asking.
+- no em dashes anywhere. use commas for sentence breaks.
+
+if asked about studio 2.5 directly: studio 2.5 is an advisory and design practice at the frontier of world model architecture for physical infrastructure, founded by jeff walter with nearly thirty years of experience across AECOM, Arup, and IBI Group.`
 
 export const SIGNAL_TOPICS = [
   {
     id: 'world-models',
-    label: 'world models and spatial AI',
+    label: 'world models for infrastructure',
     icon: '🌐',
-    query: 'generative world models spatial intelligence infrastructure design World Labs NVIDIA Cosmos 2025 2026',
-    description: 'generative world models, spatial intelligence platforms, and the physical AI stack',
+    query: 'generative world models spatial intelligence infrastructure World Labs NVIDIA Cosmos physical AI 2025 2026',
+    description: 'the structural shift from digital twins to generative, reasoning world model environments',
+  },
+  {
+    id: '3d-as-code',
+    label: '3d as code',
+    icon: '📦',
+    query: 'BIM open schema Parquet 3d as code spatial data AI-native infrastructure ara3d BIM lakehouse 2025 2026',
+    description: 'open BIM data infrastructure, BIM lakehouse architecture, and spatial data as AI-native code',
   },
   {
     id: 'bim-digital-twin',
-    label: 'BIM to digital twin',
+    label: 'BIM to world model transition',
     icon: '🏗',
-    query: 'BIM digital twin transition asset management infrastructure ISO 55000 IFC OpenUSD 2025 2026',
-    description: 'open standards convergence, asset handover, and the AIM transition',
+    query: 'BIM digital twin world model transition asset management ISO 55000 IFC OpenUSD 2025 2026',
+    description: 'from project delivery tools to persistent owner-controlled intelligence environments',
   },
   {
     id: 'agentic-ai',
     label: 'agentic AI for infrastructure',
     icon: '🤖',
     query: 'agentic AI autonomous systems infrastructure operations MCP model context protocol 2025 2026',
-    description: 'AI agents, MCP, and autonomous decision-making in infrastructure systems',
-  },
-  {
-    id: 'ai-governance',
-    label: 'AI governance',
-    icon: '⚖️',
-    query: 'AI governance infrastructure EU AI Act ISO 55013 accountability built environment 2026',
-    description: 'EU AI Act enforcement, accountability frameworks, and governance architecture',
-  },
-  {
-    id: 'spatial-data',
-    label: 'spatial data standards',
-    icon: '📐',
-    query: 'OpenUSD IFC 5 spatial data standards convergence BIM GIS interoperability infrastructure 2025 2026',
-    description: 'IFC 5, OpenUSD, and the open standards convergence reshaping the stack',
+    description: 'AI agents operating within world models, MCP, and autonomous coordination in built environments',
   },
   {
     id: 'physical-ai',
     label: 'physical AI and robotics',
     icon: '🦾',
     query: 'physical AI robotics autonomous inspection infrastructure LiDAR drone quadruped sensor 2025 2026',
-    description: 'inspection robots, autonomous drones, and physical AI systems',
+    description: 'inspection systems, autonomous drones, and physical AI operating in real infrastructure',
+  },
+  {
+    id: 'data-sovereignty',
+    label: 'data sovereignty and ownership',
+    icon: '🔐',
+    query: 'infrastructure data sovereignty vendor lock-in open data architecture asset intelligence ownership 2025 2026',
+    description: 'the business and architectural implications of owning your intelligence versus renting platform access',
+  },
+  {
+    id: 'spatial-data',
+    label: 'spatial data standards',
+    icon: '📐',
+    query: 'OpenUSD IFC 5 spatial data standards convergence BIM GIS interoperability infrastructure 2025 2026',
+    description: 'IFC 5, OpenUSD, and the open standards convergence reshaping the infrastructure data stack',
   },
   {
     id: 'lifecycle-intelligence',
     label: 'lifecycle asset intelligence',
     icon: '📊',
-    query: 'lifecycle asset intelligence infrastructure TCO capital program AI decision support ISO 55000 2025 2026',
-    description: 'TCO frameworks, predictive maintenance, and asset performance intelligence',
-  },
-  {
-    id: 'climate-infrastructure',
-    label: 'climate and resilience',
-    icon: '🌱',
-    query: 'climate AI sustainable infrastructure embodied carbon digital twin environmental intelligence 2025 2026',
-    description: 'climate risk, resilience frameworks, and environmental intelligence',
+    query: 'lifecycle asset intelligence infrastructure TCO capital program AI ISO 55000 predictive maintenance 2025 2026',
+    description: 'TCO frameworks, predictive maintenance, and compounding asset performance intelligence',
   },
 ]
 
 export const SUGGESTED_QUESTIONS = [
-  'what are the most significant developments in agentic AI for infrastructure asset management this year?',
-  'what does EU AI Act enforcement mean for infrastructure organizations starting in August 2026?',
-  'how are leading airport operators using digital twins to reduce operational costs?',
-  'what is the current state of BIM to digital twin transition in public infrastructure?',
-  'which world model platforms are most relevant for infrastructure design practice right now?',
-  'what are the key governance risks of deploying AI in infrastructure decision-making?',
-  'how should a transit authority approach AI readiness assessment?',
-  'what does the OpenUSD and IFC 5 convergence mean for infrastructure data strategy?',
+  'what is a world model and why does it matter more than a digital twin for infrastructure owners?',
+  'how does 3d as code change what is possible for AI in the built environment?',
+  'what does data sovereignty mean practically for an asset owner investing in AI right now?',
+  'how is the BIM lakehouse architecture different from current BIM platform approaches and why does it matter?',
+  'what is physical AI and how does it connect to world model architecture for airports and transit systems?',
+  'what should a design studio be building right now to stay relevant in a world model paradigm?',
+  'how do generative world models differ architecturally from current digital twin implementations?',
+  'what are the real business consequences of BIM data locked in proprietary vendor platforms?',
+  'which open data standards should infrastructure owners be building their architecture on today?',
 ]
