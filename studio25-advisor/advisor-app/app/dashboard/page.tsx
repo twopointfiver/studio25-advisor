@@ -147,14 +147,14 @@ export default function Dashboard() {
         @keyframes spin{to{transform:rotate(360deg)}}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
         @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes glow{0%,100%{box-shadow:0 0 20px rgba(123,201,6,0.4)}50%{box-shadow:0 0 40px rgba(123,201,6,0.8)}}
-        .q-card:hover{background:rgba(255,255,255,0.07)!important;border-color:rgba(123,201,6,0.4)!important;transform:translateX(4px)}
-        .topic-card:hover{background:rgba(123,201,6,0.08)!important;border-color:rgba(123,201,6,0.4)!important}
+        @keyframes glow{0%,100%{box-shadow:0 0 16px rgba(123,201,6,0.35)}50%{box-shadow:0 0 32px rgba(123,201,6,0.7)}}
+        .q-card:hover{background:rgba(255,255,255,0.06)!important;border-color:rgba(123,201,6,0.35)!important;transform:translateX(3px)}
+        .topic-card:hover{background:rgba(123,201,6,0.07)!important;border-color:rgba(123,201,6,0.35)!important}
         .nav-pill{transition:all 0.15s;cursor:pointer;appearance:none;-webkit-appearance:none}
         .nav-pill:hover{background:rgba(255,255,255,0.1)!important}
         .nav-pill.active{background:#ffffff!important;color:#000000!important;border-color:#ffffff!important}
-        .cta-book:hover{background:#8bda07!important;transform:scale(1.02)}
-        .connect-btn:hover{background:rgba(123,201,6,0.15)!important}
+        .cta-book:hover{background:#8bda07!important}
+        .arrow-btn:hover{background:rgba(123,201,6,0.2)!important}
         button{-webkit-appearance:none;appearance:none}
         button:focus{outline:none}
         .research-btn:hover:not([disabled]){background:#8bda07!important}
@@ -162,7 +162,7 @@ export default function Dashboard() {
       `}</style>
 
       {isLoading && (
-        <div style={{position:'fixed',top:64,left:0,right:0,zIndex:40,background:'#0a0a0a',borderBottom:'1.5px solid #7BC906',padding:'12px 32px',display:'flex',alignItems:'center',gap:14,animation:'fadeIn 0.2s ease'}}>
+        <div style={{position:'fixed',top:56,left:0,right:0,zIndex:40,background:'#0a0a0a',borderBottom:'1.5px solid #7BC906',padding:'12px 32px',display:'flex',alignItems:'center',gap:14,animation:'fadeIn 0.2s ease'}}>
           <div style={{width:16,height:16,border:'2px solid rgba(123,201,6,0.2)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
           <div>
             <div style={{fontSize:12,fontWeight:700,color:'#ffffff'}}>{loadingState==='searching'?'searching current sources...':'synthesizing intelligence...'}</div>
@@ -174,21 +174,21 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* NAV — logo uses width not height to handle wide PNG */}
+      {/* NAV — logo is 240x240 square, height:36px = compact nav logo */}
       <nav style={{
         position:'sticky',top:0,zIndex:50,
         background:'#000000',
         borderBottom:'0.5px solid rgba(255,255,255,0.08)',
-        height:64,
+        height:56,
         display:'flex',alignItems:'center',justifyContent:'space-between',
         padding:'0 40px',
       }}>
-        <img src={LOGO} style={{width:200,height:'auto',display:'block'}} alt="studio 2.5"/>
+        <img src={LOGO} style={{height:36,width:'auto',display:'block'}} alt="studio 2.5"/>
         <div style={{display:'flex',gap:8}}>
           {(['query','briefing'] as Mode[]).map(m => (
             <button key={m} onClick={() => { setMode(m); setResult(null); setQuestion('') }}
               className={`nav-pill${mode===m?' active':''}`}
-              style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.45)',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:12,fontWeight:700,padding:'8px 24px',borderRadius:999}}>
+              style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.45)',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:12,fontWeight:700,padding:'7px 22px',borderRadius:999}}>
               {m==='query'?'strategic q&a':'signals briefings'}
             </button>
           ))}
@@ -202,73 +202,82 @@ export default function Dashboard() {
         </div>
       </nav>
 
-      {/* HERO — sticky, tall enough to show CTA card, banner at top so grass shows fully */}
+      {/* HERO
+          Banner is 1240x500px. To show it fully without cutting:
+          - hero height = 500px (matches banner natural height)  
+          - backgroundSize = cover, backgroundPosition = center center
+          - this shows the full grass from edge to edge */}
       <div style={{
-        position:'sticky',top:64,zIndex:30,
-        height:480,
+        position:'sticky',top:56,zIndex:30,
+        height:500,
         overflow:'hidden',
         background:'#000000',
       }}>
-        {/* backgroundPosition: center top shows the grass crown, not cuts it */}
         <div style={{
           position:'absolute',inset:0,
           backgroundImage:`url(${BANNER})`,
           backgroundSize:'cover',
-          backgroundPosition:'center top',
-          filter:'brightness(0.72) saturate(1.15)',
+          backgroundPosition:'center center',
+          filter:'brightness(0.75) saturate(1.1)',
         }}/>
-        {/* Fade to black at bottom */}
-        <div style={{position:'absolute',bottom:0,left:0,right:0,height:180,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
-        {/* Subtle left darken for text */}
-        <div style={{position:'absolute',top:0,left:0,bottom:0,width:'50%',background:'linear-gradient(to right,rgba(0,0,0,0.45),transparent)',pointerEvents:'none'}}/>
+        {/* Fade bottom to black */}
+        <div style={{position:'absolute',bottom:0,left:0,right:0,height:200,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
+        {/* Left shadow for text contrast */}
+        <div style={{position:'absolute',top:0,left:0,bottom:0,width:'45%',background:'linear-gradient(to right,rgba(0,0,0,0.55),transparent)',pointerEvents:'none'}}/>
 
-        {/* Left: label + wordmark — uses width for wide PNG */}
-        <div style={{position:'absolute',bottom:72,left:48}}>
-          <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontStyle:'italic',fontSize:18,color:'rgba(255,255,255,0.85)',marginBottom:20,letterSpacing:'0.01em'}}>
+        {/* Left: label + wordmark
+            Logo is 240x240. height:110px renders it at 110x110 — large but not massive */}
+        <div style={{position:'absolute',bottom:80,left:48}}>
+          <div style={{
+            fontFamily:"'Hedvig Letters Serif',serif",
+            fontStyle:'italic',
+            fontSize:17,
+            color:'rgba(255,255,255,0.82)',
+            marginBottom:16,
+            letterSpacing:'0.01em',
+            textShadow:'0 1px 8px rgba(0,0,0,0.6)',
+          }}>
             a new type of design company.
           </div>
-          {/* width:420px renders the wide logo at proper readable scale */}
-          <img src={LOGO} style={{width:420,height:'auto',display:'block'}} alt="studio 2.5"/>
+          <img src={LOGO} style={{height:110,width:'auto',display:'block'}} alt="studio 2.5"/>
         </div>
 
-        {/* Right: CTA card with Calendly link — properly positioned */}
+        {/* Right: CTA card — positioned so it fits within 500px hero */}
         <div style={{
           position:'absolute',
           right:48,
           top:40,
           background:'rgba(0,0,0,0.88)',
           borderRadius:20,
-          padding:'28px 28px 24px',
-          width:300,
-          display:'flex',flexDirection:'column',gap:18,
+          padding:'24px 24px 20px',
+          width:288,
+          display:'flex',flexDirection:'column',gap:16,
           backdropFilter:'blur(20px)',
-          border:'1px solid rgba(255,255,255,0.15)',
+          border:'1px solid rgba(255,255,255,0.14)',
         }}>
-          {/* Arrow button — links to Calendly */}
+          {/* Arrow button — glowing green, links to Calendly */}
           <a
             href={CALENDLY}
             target="_blank"
             rel="noopener noreferrer"
-            className="connect-btn"
+            className="arrow-btn"
             style={{
-              width:58,height:58,
-              borderRadius:14,
+              width:52,height:52,
+              borderRadius:12,
               border:'2px solid #7BC906',
-              background:'rgba(123,201,6,0.1)',
+              background:'rgba(123,201,6,0.08)',
               display:'flex',alignItems:'center',justifyContent:'center',
-              cursor:'pointer',
-              transition:'all 0.15s',
-              flexShrink:0,
               textDecoration:'none',
-              animation:'glow 3s ease-in-out infinite',
+              transition:'all 0.15s',
+              animation:'glow 2.5s ease-in-out infinite',
+              flexShrink:0,
             }}
           >
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7BC906" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7BC906" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
-          <p style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.78)',lineHeight:1.7,margin:0}}>
+          <p style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.75)',lineHeight:1.65,margin:0}}>
             connect with the studio to find out how to turn these insights into actionable innovation outcomes.
           </p>
-          {/* Explicit book button */}
           <a
             href={CALENDLY}
             target="_blank"
@@ -299,14 +308,14 @@ export default function Dashboard() {
 
           {mode==='query' && !result && (
             <>
-              {/* Question box — dark with vivid green accents, not muddy green */}
+              {/* Question box — dark green with bright border, not a flat olive */}
               <div style={{
-                background:'rgba(18,31,4,0.95)',
+                background:'rgba(12,22,4,0.97)',
                 border:'1.5px solid #7BC906',
-                borderRadius:16,
-                padding:'28px 32px 22px',
-                marginBottom:32,
-                boxShadow:'0 0 0 1px rgba(123,201,6,0.1), 0 8px 40px rgba(0,0,0,0.6)',
+                borderRadius:14,
+                padding:'24px 28px 20px',
+                marginBottom:28,
+                boxShadow:'0 4px 40px rgba(0,0,0,0.5)',
               }}>
                 <textarea
                   value={question}
@@ -318,17 +327,17 @@ export default function Dashboard() {
                   style={{
                     width:'100%',
                     background:'transparent',border:'none',outline:'none',
-                    color:'#ffffff',
+                    color:'rgba(255,255,255,0.9)',
                     caretColor:'#7BC906',
                     fontFamily:"'Plus Jakarta Sans',sans-serif",
-                    fontSize:18,lineHeight:1.7,
+                    fontSize:17,lineHeight:1.7,
                     resize:'none',
-                    marginBottom:20,
+                    marginBottom:16,
                     display:'block',
                   }}
                 />
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                  <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.4)',letterSpacing:'0.06em'}}>
+                  <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.35)',letterSpacing:'0.05em'}}>
                     enter to research · shift+enter for new line
                   </span>
                   <button
@@ -340,36 +349,36 @@ export default function Dashboard() {
                       border:'none',
                       color:'#121f04',
                       fontFamily:"'Plus Jakarta Sans',sans-serif",
-                      fontSize:15,fontWeight:800,
-                      padding:'13px 48px',
+                      fontSize:14,fontWeight:800,
+                      padding:'12px 44px',
                       borderRadius:10,
-                      display:'flex',alignItems:'center',gap:10,
-                      opacity:(!question.trim()||isLoading)?0.4:1,
+                      display:'flex',alignItems:'center',gap:8,
+                      opacity:(!question.trim()||isLoading)?0.35:1,
                       transition:'all 0.15s',
                       letterSpacing:'0.04em',
                       cursor:'pointer',
                     }}
                   >
                     research
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </button>
                 </div>
               </div>
 
-              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.25)',letterSpacing:'0.14em',textTransform:'lowercase',marginBottom:16}}>suggested questions</div>
+              <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.22)',letterSpacing:'0.14em',textTransform:'lowercase',marginBottom:14}}>suggested questions</div>
               <div style={{display:'flex',flexDirection:'column',gap:6}}>
                 {SUGGESTED_QUESTIONS.map((q,i) => (
                   <button key={i} onClick={() => submitQuery(q)} className="q-card"
                     style={{
                       textAlign:'left',
                       background:'rgba(255,255,255,0.03)',
-                      border:'0.5px solid rgba(255,255,255,0.1)',
+                      border:'0.5px solid rgba(255,255,255,0.09)',
                       borderRadius:10,
-                      padding:'15px 24px',
+                      padding:'14px 22px',
                       cursor:'pointer',
                       fontFamily:"'Plus Jakarta Sans',sans-serif",
-                      fontSize:15,fontWeight:400,
-                      color:'rgba(255,255,255,0.7)',
+                      fontSize:14,fontWeight:400,
+                      color:'rgba(255,255,255,0.65)',
                       lineHeight:1.55,
                       transition:'all 0.15s',
                       width:'100%',
@@ -384,19 +393,19 @@ export default function Dashboard() {
 
           {mode==='briefing' && !result && (
             <>
-              <div style={{fontSize:10,fontWeight:800,color:'rgba(255,255,255,0.25)',letterSpacing:'0.14em',textTransform:'lowercase',marginBottom:16}}>signal areas</div>
+              <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.22)',letterSpacing:'0.14em',textTransform:'lowercase',marginBottom:14}}>signal areas</div>
               <div style={{display:'flex',flexDirection:'column',gap:6}}>
                 {SIGNAL_TOPICS.map(topic => (
                   <button key={topic.id} onClick={() => submitBriefing(topic.id)} disabled={isLoading} className="topic-card"
-                    style={{display:'flex',alignItems:'center',gap:16,background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.1)',borderRadius:10,padding:'16px 24px',cursor:'pointer',textAlign:'left',width:'100%',transition:'all 0.15s',opacity:isLoading?0.5:1,color:'#ffffff'}}>
-                    <span style={{fontSize:22,flexShrink:0}}>{topic.icon}</span>
+                    style={{display:'flex',alignItems:'center',gap:16,background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.09)',borderRadius:10,padding:'15px 22px',cursor:'pointer',textAlign:'left',width:'100%',transition:'all 0.15s',opacity:isLoading?0.5:1,color:'#ffffff'}}>
+                    <span style={{fontSize:20,flexShrink:0}}>{topic.icon}</span>
                     <div style={{flex:1}}>
-                      <div style={{fontSize:15,fontWeight:600,color:'rgba(255,255,255,0.88)',marginBottom:3,fontFamily:"'Plus Jakarta Sans',sans-serif"}}>{topic.label}</div>
-                      <div style={{fontSize:12,color:'rgba(255,255,255,0.38)',fontFamily:"'Hedvig Letters Serif',serif",lineHeight:1.5}}>{topic.description}</div>
+                      <div style={{fontSize:14,fontWeight:600,color:'rgba(255,255,255,0.85)',marginBottom:3,fontFamily:"'Plus Jakarta Sans',sans-serif"}}>{topic.label}</div>
+                      <div style={{fontSize:12,color:'rgba(255,255,255,0.35)',fontFamily:"'Hedvig Letters Serif',serif",lineHeight:1.5}}>{topic.description}</div>
                     </div>
                     {activeTopic===topic.id&&isLoading
-                      ? <div style={{width:14,height:14,border:'2px solid rgba(255,255,255,0.15)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
-                      : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7BC906" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                      ? <div style={{width:13,height:13,border:'2px solid rgba(255,255,255,0.15)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
+                      : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7BC906" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     }
                   </button>
                 ))}
@@ -413,11 +422,11 @@ export default function Dashboard() {
 
           {result && !isLoading && (
             <div style={{animation:'fadeIn 0.3s ease'}}>
-              <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(123,201,6,0.2)',borderRadius:14,padding:'22px 28px',marginBottom:8,display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:20}}>
-                <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:17,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
+              <div style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(123,201,6,0.2)',borderRadius:14,padding:'20px 28px',marginBottom:8,display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:20}}>
+                <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
                   {result.question||result.topic}
                 </div>
-                <img src={LOGO} style={{width:100,height:'auto',flexShrink:0,marginTop:3,opacity:0.45}} alt="studio 2.5"/>
+                <img src={LOGO} style={{height:28,width:'auto',flexShrink:0,marginTop:2,opacity:0.4}} alt="studio 2.5"/>
               </div>
 
               <div style={{background:'#ffffff',borderRadius:14,padding:'28px 36px',marginBottom:8}}>
@@ -425,8 +434,8 @@ export default function Dashboard() {
               </div>
 
               {result.sources && result.sources.length > 0 && (
-                <div style={{background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.08)',borderRadius:14,padding:'18px 22px',marginBottom:8}}>
-                  <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.25)',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
+                <div style={{background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.07)',borderRadius:14,padding:'16px 20px',marginBottom:8}}>
+                  <div style={{fontSize:10,fontWeight:700,color:'rgba(255,255,255,0.22)',letterSpacing:'0.08em',textTransform:'uppercase',marginBottom:12}}>
                     sources · {result.sources.length} retrieved
                   </div>
                   <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6}}>
@@ -435,17 +444,16 @@ export default function Dashboard() {
                 </div>
               )}
 
-              {/* Calendly CTA */}
-              <div style={{display:'flex',border:'1px solid rgba(123,201,6,0.25)',borderRadius:14,overflow:'hidden',marginBottom:16}}>
-                <div style={{flex:1,background:'rgba(18,31,4,0.6)',padding:'24px 28px'}}>
+              <div style={{display:'flex',border:'1px solid rgba(123,201,6,0.2)',borderRadius:14,overflow:'hidden',marginBottom:16}}>
+                <div style={{flex:1,background:'rgba(12,22,4,0.5)',padding:'22px 28px'}}>
                   <div style={{fontSize:10,fontWeight:700,color:'#7BC906',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:8}}>from insight to outcome</div>
-                  <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:18,fontWeight:700,color:'#ffffff',marginBottom:10,lineHeight:1.25}}>ready to turn this into a deliverable?</div>
-                  <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.5)',lineHeight:1.7}}>
+                  <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:17,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.25}}>ready to turn this into a deliverable?</div>
+                  <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.45)',lineHeight:1.7}}>
                     studio 2.5 converts intelligence into scoped advisory outcomes, research reports, business cases, gap analyses, and transformation roadmaps, in 1 to 2 weeks.
                   </div>
                 </div>
                 <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="cta-book"
-                  style={{flexShrink:0,width:260,background:'#7BC906',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:800,color:'#121f04',textDecoration:'none',textAlign:'center' as const,padding:'0 24px',lineHeight:1.3,transition:'all 0.15s'}}>
+                  style={{flexShrink:0,width:240,background:'#7BC906',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:15,fontWeight:800,color:'#121f04',textDecoration:'none',textAlign:'center' as const,padding:'0 20px',lineHeight:1.3,transition:'all 0.15s'}}>
                   book a free conversation
                 </a>
               </div>
@@ -454,10 +462,10 @@ export default function Dashboard() {
                 onClick={() => { setResult(null); setQuestion('') }}
                 style={{
                   fontSize:11,
-                  fontWeight:700,
-                  color:'rgba(255,255,255,0.3)',
+                  fontWeight:600,
+                  color:'rgba(255,255,255,0.28)',
                   background:'transparent',
-                  border:'0.5px solid rgba(255,255,255,0.1)',
+                  border:'0.5px solid rgba(255,255,255,0.08)',
                   borderRadius:999,
                   padding:'7px 18px',
                   cursor:'pointer',
@@ -473,8 +481,8 @@ export default function Dashboard() {
       </div>
 
       <div style={{background:'#000000',borderTop:'0.5px solid rgba(255,255,255,0.06)',padding:'20px 40px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-        <img src={LOGO} style={{width:120,height:'auto',opacity:0.3}} alt="studio 2.5"/>
-        <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(255,255,255,0.15)'}}>© 2026 studio 2.5 · advisor.studio25.xyz</span>
+        <img src={LOGO} style={{height:28,width:'auto',opacity:0.28}} alt="studio 2.5"/>
+        <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(255,255,255,0.14)'}}>© 2026 studio 2.5 · advisor.studio25.xyz</span>
         <a href="https://studio25.xyz" style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.3)',textDecoration:'none'}}>studio25.xyz →</a>
       </div>
     </div>
