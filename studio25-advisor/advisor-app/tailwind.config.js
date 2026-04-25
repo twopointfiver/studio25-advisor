@@ -19,6 +19,15 @@ module.exports = {
         sans: ['Satoshi', 'sans-serif'],
         serif: ['Hedvig Letters Serif', 'serif'],
       },
+      keyframes: {
+        'pulse-bar': {
+          '0%, 100%': { opacity: '0.35', transform: 'scaleX(0.88)' },
+          '50%': { opacity: '1', transform: 'scaleX(1)' },
+        },
+      },
+      animation: {
+        'pulse-bar': 'pulse-bar 1.25s ease-in-out infinite',
+      },
     },
   },
   plugins: [],

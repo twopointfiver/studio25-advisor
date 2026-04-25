@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { UserButton } from '@clerk/nextjs'
 import { SIGNAL_TOPICS, SUGGESTED_QUESTIONS } from '@/lib/config'
+import { BRAND } from '@/lib/brand'
 
 const CALENDLY = 'https://calendly.com/jeffrey-l-walter-studio25/jeff-walter-studio-2-5-connect?primary_color=6f9f25&month=2026-04'
 const LOGO = '/studio25-logo.png'
@@ -132,7 +133,7 @@ export default function Dashboard() {
   const bodyText = result?.answer || result?.briefing || ''
 
   return (
-    <div style={{minHeight:'100vh',background:'#000000',color:'#ffffff',fontFamily:"'Satoshi',sans-serif"}}>
+    <div style={{minHeight:'100vh',background:BRAND.bg,color:BRAND.fg,fontFamily:"'Satoshi',sans-serif"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
         *, *::before, *::after { box-sizing: border-box; }
@@ -152,8 +153,8 @@ export default function Dashboard() {
         .topic-card:hover{background:rgba(123,201,6,0.07)!important;border-color:rgba(123,201,6,0.35)!important}
         .nav-pill{transition:all 0.15s;cursor:pointer;appearance:none;-webkit-appearance:none}
         .nav-pill:hover{background:rgba(255,255,255,0.1)!important}
-        .nav-pill.active{background:#ffffff!important;color:#000000!important;border-color:#ffffff!important}
-        .cta-book:hover{background:#8bda07!important}
+        .nav-pill.active{background:#ffffff!important;color:${BRAND.bg}!important;border-color:#ffffff!important}
+        .cta-book:hover{background:${BRAND.limeBright}!important}
         .arrow-btn:hover{background:rgba(123,201,6,0.2)!important}
         button{-webkit-appearance:none;appearance:none}
         button:focus{outline:none}
@@ -194,33 +195,44 @@ export default function Dashboard() {
       `}</style>
 
       {isLoading && (
-        <div style={{position:'fixed',top:56,left:0,right:0,zIndex:40,background:'#0a0a0a',borderBottom:'1.5px solid #7BC906',padding:'10px 16px',display:'flex',alignItems:'center',gap:12,animation:'fadeIn 0.2s ease'}}>
-          <div style={{width:14,height:14,border:'2px solid rgba(123,201,6,0.2)',borderTopColor:'#7BC906',borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
+        <div style={{position:'fixed',top:56,left:0,right:0,zIndex:40,background:'#0a0a0a',borderBottom:`1.5px solid ${BRAND.lime}`,padding:'10px 16px',display:'flex',alignItems:'center',gap:12,animation:'fadeIn 0.2s ease'}}>
+          <div style={{width:14,height:14,border:'2px solid rgba(123,201,6,0.2)',borderTopColor:BRAND.lime,borderRadius:'50%',animation:'spin 0.7s linear infinite',flexShrink:0}}/>
           <div>
             <div style={{fontSize:12,fontWeight:700,color:'#ffffff'}}>{loadingState==='searching'?'searching current sources...':'synthesizing intelligence...'}</div>
             <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:10,color:'rgba(123,201,6,0.5)',marginTop:1}}>{loadingState==='searching'?'tavily retrieving results':'claude synthesizing'}</div>
           </div>
           <div style={{marginLeft:'auto',display:'flex',gap:4}}>
-            {[0,1,2].map(i => <div key={i} style={{width:5,height:5,borderRadius:'50%',background:'#7BC906',animation:`pulse 1.4s ease-in-out ${i*0.2}s infinite`}}/>)}
+            {[0,1,2].map(i => <div key={i} style={{width:5,height:5,borderRadius:'50%',background:BRAND.lime,animation:`pulse 1.4s ease-in-out ${i*0.2}s infinite`}}/>)}
           </div>
         </div>
       )}
 
       {/* NAV */}
-      <nav style={{position:'sticky',top:0,zIndex:50,background:'#000000',borderBottom:'0.5px solid rgba(255,255,255,0.08)',height:56,display:'flex',alignItems:'center'}}>
+      <nav style={{position:'sticky',top:0,zIndex:50,background:BRAND.bg,borderBottom:'0.5px solid rgba(255,255,255,0.08)',height:56,display:'flex',alignItems:'center'}}>
         <div className="nav-inner" style={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 40px'}}>
           <img className="nav-logo" src={LOGO} style={{height:36,width:'auto',display:'block',flexShrink:0}} alt="studio 2.5"/>
           <div style={{display:'flex',gap:8}}>
             {(['query','briefing'] as Mode[]).map(m => (
-              <button key={m} onClick={() => { setMode(m); setResult(null); setQuestion('') }}
+              <button key={m} onClick={() => {
+                setMode(m)
+                setResult(null)
+                setQuestion('')
+              }}
                 className={`nav-pill${mode===m?' active':''}`}
-                style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.45)',color:'#ffffff',fontFamily:"'Satoshi',sans-serif",fontSize:12,fontWeight:700,padding:'7px 22px',borderRadius:999,whiteSpace:'nowrap'}}>
+                style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.45)',color:BRAND.fg,fontFamily:"'Satoshi',sans-serif",fontSize:12,fontWeight:700,padding:'7px 22px',borderRadius:999,whiteSpace:'nowrap'}}>
                 {m==='query'?'strategic q&a':'signals briefings'}
               </button>
             ))}
+            <button
+              onClick={() => { window.location.href = '/proposal' }}
+              className="nav-pill"
+              style={{background:'rgba(123,201,6,0.12)',border:'1.5px solid rgba(123,201,6,0.55)',color:'#c8f486',fontFamily:"'Satoshi',sans-serif",fontSize:12,fontWeight:800,padding:'7px 18px',borderRadius:999,whiteSpace:'nowrap'}}
+            >
+              proposal workspace →
+            </button>
           </div>
           <div style={{display:'flex',alignItems:'center',gap:16,flexShrink:0}}>
-            <a className="nav-studio-link" href="https://studio25.xyz" style={{display:'flex',alignItems:'center',gap:6,color:'#7BC906',fontSize:12,fontWeight:700,textDecoration:'none',whiteSpace:'nowrap'}}>
+            <a className="nav-studio-link" href="https://studio25.xyz" style={{display:'flex',alignItems:'center',gap:6,color:BRAND.lime,fontSize:12,fontWeight:700,textDecoration:'none',whiteSpace:'nowrap'}}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="12" cy="12" r="10"/><path d="M15 12H9M12 9l-3 3 3 3"/></svg>
               studio 2.5.xyz
             </a>
@@ -284,12 +296,23 @@ export default function Dashboard() {
       </div>
 
       {/* SCROLL CONTENT */}
-      <div style={{position:'relative',zIndex:50,background:'#000000',minHeight:'100vh',padding:'40px 0 80px'}}>
+      <div style={{position:'relative',zIndex:50,background:BRAND.bg,minHeight:'100vh',padding:'40px 0 80px'}}>
         <div className="content-inner" style={{maxWidth:1100,margin:'0 auto',padding:'0 48px'}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:12,background:'rgba(123,201,6,0.08)',border:'0.5px solid rgba(123,201,6,0.35)',borderRadius:12,padding:'12px 14px',marginBottom:14}}>
+            <div style={{fontSize:12,color:'rgba(255,255,255,0.8)',lineHeight:1.5}}>
+              need full proposal output, use the dedicated proposal workspace with structured intake and three-agent generation.
+            </div>
+            <button
+              onClick={() => { window.location.href = '/proposal' }}
+              style={{background:'#7BC906',border:'none',color:'#121f04',fontSize:12,fontWeight:800,padding:'9px 12px',borderRadius:999,cursor:'pointer',whiteSpace:'nowrap'}}
+            >
+              open proposal →
+            </button>
+          </div>
 
           {mode==='query' && !result && (
             <>
-              <div className="question-box" style={{background:'rgba(12,22,4,0.97)',border:'1.5px solid #7BC906',borderRadius:14,padding:'24px 28px 20px',marginBottom:24,boxShadow:'0 4px 40px rgba(0,0,0,0.5)'}}>
+              <div className="question-box" style={{background:BRAND.panelDark,border:`1.5px solid ${BRAND.lime}`,borderRadius:BRAND.panelRadius,padding:'24px 28px 20px',marginBottom:24,boxShadow:'0 4px 40px rgba(0,0,0,0.5)'}}>
                 <textarea className="question-textarea" value={question}
                   onChange={e => setQuestion(e.target.value)}
                   onKeyDown={e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitQuery()} }}
@@ -301,7 +324,7 @@ export default function Dashboard() {
                     enter to research · shift+enter for new line
                   </span>
                   <button onClick={() => submitQuery()} disabled={isLoading||!question.trim()} className="research-btn"
-                    style={{background:'#7BC906',border:'none',color:'#121f04',fontFamily:"'Satoshi',sans-serif",fontSize:14,fontWeight:800,padding:'12px 44px',borderRadius:10,display:'flex',alignItems:'center',gap:8,opacity:(!question.trim()||isLoading)?0.35:1,transition:'all 0.15s',letterSpacing:'0.04em',cursor:'pointer',flexShrink:0}}>
+                    style={{background:BRAND.lime,border:'none',color:BRAND.ink,fontFamily:"'Satoshi',sans-serif",fontSize:14,fontWeight:800,padding:'12px 44px',borderRadius:10,display:'flex',alignItems:'center',gap:8,opacity:(!question.trim()||isLoading)?0.35:1,transition:'all 0.15s',letterSpacing:'0.04em',cursor:'pointer',flexShrink:0}}>
                     research
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </button>
@@ -352,7 +375,7 @@ export default function Dashboard() {
             <div style={{animation:'fadeIn 0.3s ease'}}>
               <div className="result-header" style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(123,201,6,0.2)',borderRadius:14,padding:'20px 28px',marginBottom:8,display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:16}}>
                 <div style={{fontFamily:"'Satoshi',sans-serif",fontSize:16,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
-                  {result.question||result.topic}
+                  {result.question || result.topic || 'proposal output'}
                 </div>
                 <img src={LOGO} style={{height:24,width:'auto',flexShrink:0,marginTop:2,opacity:0.4}} alt="studio 2.5"/>
               </div>
@@ -391,7 +414,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="footer-inner" style={{background:'#000000',borderTop:'0.5px solid rgba(255,255,255,0.06)',padding:'20px 40px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+      <div className="footer-inner" style={{background:BRAND.bg,borderTop:'0.5px solid rgba(255,255,255,0.06)',padding:'20px 40px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
         <img src={LOGO} style={{height:26,width:'auto',opacity:0.28}} alt="studio 2.5"/>
         <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(255,255,255,0.14)'}}>© 2026 studio 2.5 · advisor.studio25.xyz</span>
         <a href="https://studio25.xyz" style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.3)',textDecoration:'none'}}>studio25.xyz →</a>
