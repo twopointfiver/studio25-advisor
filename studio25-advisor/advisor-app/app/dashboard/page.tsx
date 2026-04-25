@@ -132,7 +132,7 @@ export default function Dashboard() {
   const bodyText = result?.answer || result?.briefing || ''
 
   return (
-    <div style={{minHeight:'100vh',background:'#000000',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif"}}>
+    <div style={{minHeight:'100vh',background:'#000000',color:'#ffffff',fontFamily:"'Satoshi',sans-serif"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
         *, *::before, *::after { box-sizing: border-box; }
@@ -214,7 +214,7 @@ export default function Dashboard() {
             {(['query','briefing'] as Mode[]).map(m => (
               <button key={m} onClick={() => { setMode(m); setResult(null); setQuestion('') }}
                 className={`nav-pill${mode===m?' active':''}`}
-                style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.45)',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:12,fontWeight:700,padding:'7px 22px',borderRadius:999,whiteSpace:'nowrap'}}>
+                style={{background:'transparent',border:'1.5px solid rgba(255,255,255,0.45)',color:'#ffffff',fontFamily:"'Satoshi',sans-serif",fontSize:12,fontWeight:700,padding:'7px 22px',borderRadius:999,whiteSpace:'nowrap'}}>
                 {m==='query'?'strategic q&a':'signals briefings'}
               </button>
             ))}
@@ -235,11 +235,11 @@ export default function Dashboard() {
         <div style={{position:'absolute',bottom:0,left:0,right:0,height:200,background:'linear-gradient(to bottom,transparent,#000000)',pointerEvents:'none'}}/>
         <div style={{position:'absolute',top:0,left:0,bottom:0,width:'65%',background:'linear-gradient(to right,rgba(0,0,0,0.65),transparent)',pointerEvents:'none'}}/>
         <div style={{position:'absolute',bottom:60,left:48,right:'38%'}}>
-          <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:14,fontWeight:500,color:'rgba(255,255,255,0.7)',marginBottom:12,letterSpacing:'0.04em'}}>
+          <div style={{fontFamily:"'Satoshi',sans-serif",fontSize:14,fontWeight:500,color:'rgba(255,255,255,0.7)',marginBottom:12,letterSpacing:'0.04em'}}>
             a new type of design company.
           </div>
           <img src={LOGO} style={{height:36,width:'auto',display:'block',marginBottom:14,opacity:0.9}} alt="studio 2.5"/>
-          <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:'clamp(72px, 9vw, 120px)',fontWeight:800,lineHeight:0.92,color:'#ffffff',letterSpacing:'-0.03em',textShadow:'0 2px 20px rgba(0,0,0,0.5)'}}>
+          <div style={{fontFamily:"'Satoshi',sans-serif",fontSize:'clamp(72px, 9vw, 120px)',fontWeight:800,lineHeight:0.92,color:'#ffffff',letterSpacing:'-0.03em',textShadow:'0 2px 20px rgba(0,0,0,0.5)'}}>
             how to<br/><span style={{color:'#7BC906'}}>grow 3d.</span>
           </div>
         </div>
@@ -252,7 +252,7 @@ export default function Dashboard() {
             connect with the studio to find out how to turn these insights into actionable innovation outcomes.
           </p>
           <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="cta-book"
-            style={{display:'block',background:'#7BC906',color:'#121f04',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:13,fontWeight:800,padding:'12px 16px',borderRadius:10,textDecoration:'none',textAlign:'center' as const,letterSpacing:'0.03em',transition:'all 0.15s'}}>
+            style={{display:'block',background:'#7BC906',color:'#121f04',fontFamily:"'Satoshi',sans-serif",fontSize:13,fontWeight:800,padding:'12px 16px',borderRadius:10,textDecoration:'none',textAlign:'center' as const,letterSpacing:'0.03em',transition:'all 0.15s'}}>
             book a free conversation →
           </a>
         </div>
@@ -267,17 +267,17 @@ export default function Dashboard() {
         </div>
         {/* Content below banner in normal flow */}
         <div style={{padding:'0 20px 24px',background:'#000000'}}>
-          <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.55)',marginBottom:8,letterSpacing:'0.04em'}}>
+          <div style={{fontFamily:"'Satoshi',sans-serif",fontSize:12,fontWeight:500,color:'rgba(255,255,255,0.55)',marginBottom:8,letterSpacing:'0.04em'}}>
             a new type of design company.
           </div>
           <img src={LOGO} style={{height:28,width:'auto',display:'block',marginBottom:12,opacity:0.85}} alt="studio 2.5"/>
           {/* Headline in normal flow — no overlap possible */}
-          <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:'clamp(52px,14vw,72px)',fontWeight:800,lineHeight:0.92,color:'#ffffff',letterSpacing:'-0.03em',marginBottom:24}}>
+          <div style={{fontFamily:"'Satoshi',sans-serif",fontSize:'clamp(52px,14vw,72px)',fontWeight:800,lineHeight:0.92,color:'#ffffff',letterSpacing:'-0.03em',marginBottom:24}}>
             how to<br/><span style={{color:'#7BC906'}}>grow 3d.</span>
           </div>
           {/* CTA button below headline, full width */}
           <a href={CALENDLY} target="_blank" rel="noopener noreferrer"
-            style={{display:'block',background:'#7BC906',color:'#121f04',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:15,fontWeight:800,padding:'16px 20px',borderRadius:12,textDecoration:'none',textAlign:'center' as const,letterSpacing:'0.03em'}}>
+            style={{display:'block',background:'#7BC906',color:'#121f04',fontFamily:"'Satoshi',sans-serif",fontSize:15,fontWeight:800,padding:'16px 20px',borderRadius:12,textDecoration:'none',textAlign:'center' as const,letterSpacing:'0.03em'}}>
             book a free conversation →
           </a>
         </div>
@@ -295,13 +295,13 @@ export default function Dashboard() {
                   onKeyDown={e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submitQuery()} }}
                   placeholder="ask a question about world models and AI transformation."
                   disabled={isLoading} rows={3}
-                  style={{width:'100%',background:'transparent',border:'none',outline:'none',color:'rgba(255,255,255,0.9)',caretColor:'#7BC906',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:17,lineHeight:1.7,resize:'none',marginBottom:16,display:'block'}}/>
+                  style={{width:'100%',background:'transparent',border:'none',outline:'none',color:'rgba(255,255,255,0.9)',caretColor:'#7BC906',fontFamily:"'Satoshi',sans-serif",fontSize:17,lineHeight:1.7,resize:'none',marginBottom:16,display:'block'}}/>
                 <div className="research-row" style={{display:'flex',justifyContent:'space-between',alignItems:'center',gap:12}}>
                   <span style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:11,color:'rgba(123,201,6,0.35)',letterSpacing:'0.05em'}}>
                     enter to research · shift+enter for new line
                   </span>
                   <button onClick={() => submitQuery()} disabled={isLoading||!question.trim()} className="research-btn"
-                    style={{background:'#7BC906',border:'none',color:'#121f04',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:14,fontWeight:800,padding:'12px 44px',borderRadius:10,display:'flex',alignItems:'center',gap:8,opacity:(!question.trim()||isLoading)?0.35:1,transition:'all 0.15s',letterSpacing:'0.04em',cursor:'pointer',flexShrink:0}}>
+                    style={{background:'#7BC906',border:'none',color:'#121f04',fontFamily:"'Satoshi',sans-serif",fontSize:14,fontWeight:800,padding:'12px 44px',borderRadius:10,display:'flex',alignItems:'center',gap:8,opacity:(!question.trim()||isLoading)?0.35:1,transition:'all 0.15s',letterSpacing:'0.04em',cursor:'pointer',flexShrink:0}}>
                     research
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                   </button>
@@ -311,7 +311,7 @@ export default function Dashboard() {
               <div style={{display:'flex',flexDirection:'column',gap:6}}>
                 {SUGGESTED_QUESTIONS.map((q,i) => (
                   <button key={i} onClick={() => submitQuery(q)} className="q-card"
-                    style={{textAlign:'left',background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.09)',borderRadius:10,padding:'14px 22px',cursor:'pointer',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:14,fontWeight:400,color:'rgba(255,255,255,0.65)',lineHeight:1.55,transition:'all 0.15s',width:'100%'}}>
+                    style={{textAlign:'left',background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.09)',borderRadius:10,padding:'14px 22px',cursor:'pointer',fontFamily:"'Satoshi',sans-serif",fontSize:14,fontWeight:400,color:'rgba(255,255,255,0.65)',lineHeight:1.55,transition:'all 0.15s',width:'100%'}}>
                     {q}
                   </button>
                 ))}
@@ -328,7 +328,7 @@ export default function Dashboard() {
                     style={{display:'flex',alignItems:'center',gap:14,background:'rgba(255,255,255,0.03)',border:'0.5px solid rgba(255,255,255,0.09)',borderRadius:10,padding:'15px 22px',cursor:'pointer',textAlign:'left',width:'100%',transition:'all 0.15s',opacity:isLoading?0.5:1,color:'#ffffff'}}>
                     <span style={{fontSize:20,flexShrink:0}}>{topic.icon}</span>
                     <div style={{flex:1,minWidth:0}}>
-                      <div style={{fontSize:14,fontWeight:600,color:'rgba(255,255,255,0.85)',marginBottom:2,fontFamily:"'Plus Jakarta Sans',sans-serif"}}>{topic.label}</div>
+                      <div style={{fontSize:14,fontWeight:600,color:'rgba(255,255,255,0.85)',marginBottom:2,fontFamily:"'Satoshi',sans-serif"}}>{topic.label}</div>
                       <div style={{fontSize:11,color:'rgba(255,255,255,0.35)',fontFamily:"'Hedvig Letters Serif',serif",lineHeight:1.45}}>{topic.description}</div>
                     </div>
                     {activeTopic===topic.id&&isLoading
@@ -351,7 +351,7 @@ export default function Dashboard() {
           {result && !isLoading && (
             <div style={{animation:'fadeIn 0.3s ease'}}>
               <div className="result-header" style={{background:'rgba(255,255,255,0.04)',border:'0.5px solid rgba(123,201,6,0.2)',borderRadius:14,padding:'20px 28px',marginBottom:8,display:'flex',alignItems:'flex-start',justifyContent:'space-between',gap:16}}>
-                <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
+                <div style={{fontFamily:"'Satoshi',sans-serif",fontSize:16,fontWeight:600,color:'rgba(255,255,255,0.9)',lineHeight:1.45,flex:1}}>
                   {result.question||result.topic}
                 </div>
                 <img src={LOGO} style={{height:24,width:'auto',flexShrink:0,marginTop:2,opacity:0.4}} alt="studio 2.5"/>
@@ -372,18 +372,18 @@ export default function Dashboard() {
               <div className="calendly-cta-wrap" style={{display:'flex',border:'1px solid rgba(123,201,6,0.2)',borderRadius:14,overflow:'hidden',marginBottom:16}}>
                 <div style={{flex:1,background:'rgba(12,22,4,0.5)',padding:'22px 24px'}}>
                   <div style={{fontSize:10,fontWeight:700,color:'#7BC906',letterSpacing:'0.12em',textTransform:'uppercase',marginBottom:8}}>from insight to outcome</div>
-                  <div style={{fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:16,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.25}}>ready to turn this into a deliverable?</div>
+                  <div style={{fontFamily:"'Satoshi',sans-serif",fontSize:16,fontWeight:700,color:'#ffffff',marginBottom:8,lineHeight:1.25}}>ready to turn this into a deliverable?</div>
                   <div style={{fontFamily:"'Hedvig Letters Serif',serif",fontSize:13,color:'rgba(255,255,255,0.45)',lineHeight:1.65}}>
                     studio 2.5 converts intelligence into scoped advisory outcomes, research reports, business cases, gap analyses, and transformation roadmaps, in 1 to 2 weeks.
                   </div>
                 </div>
                 <a href={CALENDLY} target="_blank" rel="noopener noreferrer" className="cta-book calendly-cta-btn"
-                  style={{flexShrink:0,width:220,background:'#7BC906',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Plus Jakarta Sans',sans-serif",fontSize:15,fontWeight:800,color:'#121f04',textDecoration:'none',textAlign:'center' as const,padding:'0 20px',lineHeight:1.3,transition:'all 0.15s'}}>
+                  style={{flexShrink:0,width:220,background:'#7BC906',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Satoshi',sans-serif",fontSize:15,fontWeight:800,color:'#121f04',textDecoration:'none',textAlign:'center' as const,padding:'0 20px',lineHeight:1.3,transition:'all 0.15s'}}>
                   book a free conversation
                 </a>
               </div>
               <button onClick={() => { setResult(null); setQuestion('') }}
-                style={{fontSize:11,fontWeight:600,color:'rgba(255,255,255,0.28)',background:'transparent',border:'0.5px solid rgba(255,255,255,0.08)',borderRadius:999,padding:'7px 18px',cursor:'pointer',fontFamily:"'Plus Jakarta Sans',sans-serif",transition:'all 0.15s'}}>
+                style={{fontSize:11,fontWeight:600,color:'rgba(255,255,255,0.28)',background:'transparent',border:'0.5px solid rgba(255,255,255,0.08)',borderRadius:999,padding:'7px 18px',cursor:'pointer',fontFamily:"'Satoshi',sans-serif",transition:'all 0.15s'}}>
                 ← new {mode==='query'?'question':'briefing'}
               </button>
             </div>

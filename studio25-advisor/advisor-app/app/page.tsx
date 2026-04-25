@@ -6,7 +6,7 @@ const LOGO = '/studio25-logo.png'
 
 export default function Home() {
   return (
-    <main style={{minHeight:'100vh',background:'#000000',color:'#ffffff',fontFamily:"'Plus Jakarta Sans',sans-serif"}}>
+    <main style={{minHeight:'100vh',background:'#000000',color:'#ffffff',fontFamily:"'Satoshi',sans-serif"}}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Hedvig+Letters+Serif:opsz@12..24&display=swap');
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.35;transform:scale(0.65)}}

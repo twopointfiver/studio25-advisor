@@ -16,7 +16,7 @@ module.exports = {
         'g-wash': '#f4f7ed',
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'sans-serif'],
+        sans: ['Satoshi', 'sans-serif'],
         serif: ['Hedvig Letters Serif', 'serif'],
       },
     },
